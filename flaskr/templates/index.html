@@ -1,0 +1,176 @@
+<!-- index.html -->
+{% extends 'base.html' %}
+
+{% block title %}careerbridge - Connecting Talent to Opportunity{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero position-relative overflow-hidden">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-shapes"></div>
+    <div class="container position-relative py-5" style="z-index: 1;">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="animate-fade-in">
+                    <span class="badge bg-white px-3 py-2 mb-3 fw-normal text-primary">Your Campus Career Partner</span>
+                    <h1 class="display-4 fw-bold mb-4 text-white">Launch Your <span class="text-warning">Dream Career</span> Journey</h1>
+                    <div class="mb-4 highlight-features">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <p class="mb-0 text-white">Track placement events & opportunities in one place</p>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <p class="mb-0 text-white">Apply to jobs matching your skills & qualifications</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <p class="mb-0 text-white">Get real-time updates on application status</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <a href="{{ url_for('jobs.index') }}" class="btn btn-primary btn-lg shadow-sm rounded-pill px-4 py-2 pulse-animation">
+                            <i class="fas fa-briefcase me-2"></i>Explore Opportunities
+                        </a>
+                        {% if not g.user %}
+                        <a href="{{ url_for('auth.auth_select') }}" class="btn btn-warning btn-lg rounded-pill px-4 py-2 hover-scale text-dark fw-medium">
+                            <i class="fas fa-sign-in-alt me-2"></i>Join Now
+                        </a>
+                        {% elif g.user.user_type == 'student' %}
+                        <a href="{{ url_for('jobs.my_applications') }}" class="btn btn-light btn-lg rounded-pill px-4 py-2 border-0 shadow-sm hover-scale">
+                            <i class="fas fa-clipboard-list me-2 text-primary"></i>My Applications
+                        </a>
+                        {% elif g.user.user_type == 'recruiter' %}
+                        <a href="{{ url_for('jobs.create') }}" class="btn btn-light btn-lg rounded-pill px-4 py-2 border-0 shadow-sm hover-scale">
+                            <i class="fas fa-plus-circle me-2 text-primary"></i>Post a Job
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 position-relative">
+                <div class="hero-image-container animate-float">
+                    <img src="/static/img/hero-illustration.svg" alt="CareerBridge Illustration" class="img-fluid hero-image" onerror="this.style.display='none';">
+                    <div class="floating-card floating-card-1">
+                        <i class="fas fa-user-graduate text-primary"></i>
+                        <span class="fw-medium">Students</span>
+                    </div>
+                    <div class="floating-card floating-card-2">
+                        <i class="fas fa-building text-warning"></i>
+                        <span class="fw-medium">Recruiters</span>
+                    </div>
+                    <div class="floating-card floating-card-3">
+                        <i class="fas fa-briefcase text-success"></i>
+                        <span class="fw-medium">Jobs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Key Features</h2>
+            <p class="text-muted">Everything you need for a seamless placement experience</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-4">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Job Listings</h5>
+                        <p class="card-text text-muted">Browse and filter job opportunities based on your qualifications and preferences.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-4">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Application Tracking</h5>
+                        <p class="card-text text-muted">Keep track of all your job applications and their current status in one place.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-4">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Interview Scheduling</h5>
+                        <p class="card-text text-muted">Manage interview schedules and receive timely notifications for upcoming events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How It Works</h2>
+            <p class="text-muted">Simple steps to connect with your dream opportunity</p>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="/static/img/how-it-works.svg" alt="How It Works" class="img-fluid rounded shadow-sm" onerror="this.style.display='none';">
+            </div>
+            <div class="col-lg-6">
+                <div class="steps">
+                    <div class="step d-flex mb-4">
+                        <div class="step-number bg-primary text-white rounded-circle">1</div>
+                        <div class="step-content ms-3">
+                            <h5 class="fw-bold">Create Your Profile</h5>
+                            <p class="text-muted">Complete your profile with academic details, skills, and preferences.</p>
+                        </div>
+                    </div>
+                    <div class="step d-flex mb-4">
+                        <div class="step-number bg-primary text-white rounded-circle">2</div>
+                        <div class="step-content ms-3">
+                            <h5 class="fw-bold">Browse Opportunities</h5>
+                            <p class="text-muted">Explore job listings that match your qualifications and interests.</p>
+                        </div>
+                    </div>
+                    <div class="step d-flex mb-4">
+                        <div class="step-number bg-primary text-white rounded-circle">3</div>
+                        <div class="step-content ms-3">
+                            <h5 class="fw-bold">Apply & Track</h5>
+                            <p class="text-muted">Submit applications and track their status through the entire process.</p>
+                        </div>
+                    </div>
+                    <div class="step d-flex">
+                        <div class="step-number bg-primary text-white rounded-circle">4</div>
+                        <div class="step-content ms-3">
+                            <h5 class="fw-bold">Interview & Get Hired</h5>
+                            <p class="text-muted">Attend scheduled interviews and receive offers directly through the platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta py-5 bg-primary text-white">
+    <div class="container py-5 text-center">
+        <h2 class="fw-bold mb-4">Ready to Start Your Career Journey?</h2>
+        <p class="mb-5">Join careerbridge today and connect with opportunities that match your skills and aspirations.</p>
+        <a href="{{ url_for('auth.auth_select') }}" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold">
+            Get Started Now
+        </a>
+    </div>
+</section>
+
+{% endblock %}

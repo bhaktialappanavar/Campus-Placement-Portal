@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Update Job - {{ job.title }} - CareerBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h3 mb-0">Update Job Listing</h1>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <!-- Job Title -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Job Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title" value="{{ job.title }}" required>
+                            <div class="form-text">Enter a clear and specific job title (e.g., "Software Engineer", "Marketing Manager").</div>
+                        </div>
+
+                        <!-- Company Name (Read-only) -->
+                        <div class="mb-3">
+                            <label for="company_name" class="form-label">Company Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="company_name" name="company_name" value="{{ job.company_name }}" readonly>
+                            <div class="form-text">Company name cannot be changed.</div>
+                        </div>
+
+                        <!-- Job Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Job Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" name="description" rows="6" required>{{ job.description }}</textarea>
+                            <div class="form-text">Provide a detailed description of the job, including responsibilities, requirements, and benefits.</div>
+                        </div>
+
+                        <!-- Job Location -->
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Job Location <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ job.location }}" required>
+                            <div class="form-text">Specify the job location (e.g., "Bangalore, India", "Remote").</div>
+                        </div>
+
+                        <!-- Job Type -->
+                        <div class="mb-3">
+                            <label for="job_type" class="form-label">Job Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="job_type" name="job_type" required>
+                                <option value="" disabled>Select job type</option>
+                                {% for job_type in job_types %}
+                                <option value="{{ job_type }}" {% if job.job_type == job_type %}selected{% endif %}>{{ job_type }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Salary Range -->
+                        <div class="mb-3">
+                            <label for="salary_range" class="form-label">Salary Range</label>
+                            <input type="text" class="form-control" id="salary_range" name="salary_range" value="{{ job.salary_range }}">
+                            <div class="form-text">Optional. Provide a salary range (e.g., "₹5-8 LPA", "₹40,000-60,000 per month").</div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h4 class="mb-3">Eligibility Criteria</h4>
+
+                        <!-- Minimum CGPA -->
+                        <div class="mb-3">
+                            <label for="min_cgpa" class="form-label">Minimum CGPA <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="min_cgpa" name="min_cgpa" min="0" max="10" step="0.1" value="{{ job.min_cgpa }}" required>
+                            <div class="form-text">Specify the minimum CGPA required for this job (0-10).</div>
+                        </div>
+
+                        <!-- Eligible Branches -->
+                        <div class="mb-3">
+                            <label class="form-label">Eligible Branches <span class="text-danger">*</span></label>
+                            <div class="row">
+                                {% for branch in branches %}
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="eligible_branches" value="{{ branch }}" id="branch_{{ loop.index }}" {% if branch in job.eligible_branches %}checked{% endif %}>
+                                        <label class="form-check-label" for="branch_{{ loop.index }}">
+                                            {{ branch }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="form-text">Select all branches that are eligible for this job.</div>
+                        </div>
+
+                        <!-- Application Deadline -->
+                        <div class="mb-3">
+                            <label for="application_deadline" class="form-label">Application Deadline <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="application_deadline" name="application_deadline" value="{{ job.application_deadline_formatted }}" required>
+                            <div class="form-text">Specify the last date for submitting applications.</div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a href="{{ url_for('jobs.detail', id=job._id) }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set minimum date for application deadline to today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayFormatted = `${yyyy}-${mm}-${dd}`;
+    
+    document.getElementById('application_deadline').min = todayFormatted;
+    
+    // Form validation
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        const eligibleBranches = document.querySelectorAll('input[name="eligible_branches"]:checked');
+        
+        if (eligibleBranches.length === 0) {
+            event.preventDefault();
+            alert('Please select at least one eligible branch.');
+        }
+    });
+});
+</script>
+{% endblock %}

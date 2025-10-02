@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>CareerBridge Main Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="mainGradient">
+            <stop stop-color="#1E3A8A" offset="0%"></stop>
+            <stop stop-color="#3B82F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="purpleGradient">
+            <stop stop-color="#4338CA" offset="0%"></stop>
+            <stop stop-color="#8B5CF6" offset="100%"></stop>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.2"/>
+        </filter>
+    </defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle fill="#EFF6FF" cx="150" cy="500" r="80"></circle>
+        <circle fill="#DBEAFE" cx="650" cy="150" r="100"></circle>
+        <circle fill="#BFDBFE" cx="400" cy="80" r="50"></circle>
+        
+        <!-- Bridge Structure -->
+        <path d="M100,350 C250,250 550,250 700,350" stroke="#1E40AF" stroke-width="8" stroke-linecap="round"></path>
+        <path d="M100,370 C250,270 550,270 700,370" stroke="#1E40AF" stroke-width="8" stroke-linecap="round"></path>
+        
+        <!-- Pillars -->
+        <rect fill="#1E40AF" x="150" y="370" width="20" height="130" rx="2"></rect>
+        <rect fill="#1E40AF" x="400" y="370" width="20" height="150" rx="2"></rect>
+        <rect fill="#1E40AF" x="650" y="370" width="20" height="130" rx="2"></rect>
+        
+        <!-- Base -->
+        <rect fill="#1E3A8A" x="50" y="500" width="700" height="20" rx="5"></rect>
+        
+        <!-- Main Logo Element -->
+        <circle fill="url(#mainGradient)" cx="400" cy="250" r="100" filter="url(#shadow)"></circle>
+        
+        <!-- Graduation Cap Icon -->
+        <g transform="translate(350, 220)">
+            <path d="M100,20 L50,0 L0,20 L50,40 L100,20" fill="white"></path>
+            <rect fill="white" x="80" y="20" width="5" height="30"></rect>
+            <path d="M30,30 L70,30 L70,50 C70,60 50,70 50,70 C50,70 30,60 30,50 L30,30" fill="white"></path>
+        </g>
+        
+        <!-- People Silhouettes -->
+        <circle fill="#3B82F6" cx="200" cy="420" r="30"></circle>
+        <rect fill="#3B82F6" x="185" y="450" width="30" height="50" rx="10"></rect>
+        
+        <circle fill="#8B5CF6" cx="600" cy="420" r="30"></circle>
+        <rect fill="#8B5CF6" x="585" y="450" width="30" height="50" rx="10"></rect>
+        
+        <!-- Connection Lines -->
+        <path d="M240,420 C300,380 500,380 560,420" stroke="#60A5FA" stroke-width="3" stroke-dasharray="5,5"></path>
+        
+        <!-- Document Icons -->
+        <g transform="translate(270, 350)">
+            <rect fill="white" x="0" y="0" width="40" height="50" rx="5"></rect>
+            <line x1="10" y1="15" x2="30" y2="15" stroke="#3B82F6" stroke-width="2"></line>
+            <line x1="10" y1="25" x2="30" y2="25" stroke="#3B82F6" stroke-width="2"></line>
+            <line x1="10" y1="35" x2="20" y2="35" stroke="#3B82F6" stroke-width="2"></line>
+        </g>
+        
+        <g transform="translate(490, 350)">
+            <rect fill="white" x="0" y="0" width="40" height="50" rx="5"></rect>
+            <line x1="10" y1="15" x2="30" y2="15" stroke="#8B5CF6" stroke-width="2"></line>
+            <line x1="10" y1="25" x2="30" y2="25" stroke="#8B5CF6" stroke-width="2"></line>
+            <line x1="10" y1="35" x2="20" y2="35" stroke="#8B5CF6" stroke-width="2"></line>
+        </g>
+    </g>
+</svg>

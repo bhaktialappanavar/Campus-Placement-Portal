@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Recruiter Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Complete Your Recruiter Profile</h3>
+          <p class="mb-0 small">Please provide your company details to post jobs</p>
+        </div>
+        <div class="card-body">
+          
+          <div class="row mb-4">
+            <div class="col-md-3 text-center">
+              {% if recruiter.profile_photo_url %}
+                <img src="{{ url_for('profile.profile_photo', filename=recruiter.profile_photo_url) }}" class="img-thumbnail rounded-circle profile-img" alt="Profile Photo" style="width: 150px; height: 150px; object-fit: cover;">
+              {% else %}
+                <div class="profile-placeholder rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 150px; height: 150px; margin: 0 auto;">
+                  <i class="fas fa-building fa-5x text-secondary"></i>
+                </div>
+              {% endif %}
+            </div>
+            <div class="col-md-9 d-flex align-items-center">
+              <div>
+                <h4>{{ recruiter.full_name if recruiter.full_name else 'Complete Your Profile' }}</h4>
+                <p class="text-muted mb-0">{{ recruiter.email }}</p>
+                <p class="text-muted mb-0">{{ recruiter.company_name if recruiter.company_name else '' }}</p>
+                {% if recruiter.profile_complete %}
+                  <span class="badge bg-success mt-2">Profile Complete</span>
+                {% else %}
+                  <span class="badge bg-warning mt-2">Profile Incomplete</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <!-- Personal Information -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Personal Information</h4>
+              
+              <div class="form-group mb-3">
+                <label for="full_name" class="form-label"><i class="fas fa-user me-2"></i>Full Name</label>
+                <input class="form-control" name="full_name" id="full_name" placeholder="Enter your full name" required value="{{ recruiter.full_name if recruiter.full_name else '' }}">
+                <div class="invalid-feedback">Please enter your full name.</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="phone" class="form-label"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text">+91</span>
+                  <input class="form-control" type="tel" name="phone" id="phone" placeholder="Must start with 6, 7, 8, or 9" required pattern="[6-9][0-9]{9}" maxlength="10" value="{{ recruiter.phone[3:] if recruiter.phone else '' }}" oninput="validatePhoneNumber(this)">
+                  <div class="invalid-feedback">
+                    <i class="fas fa-times-circle me-1"></i> Phone number must start with 6, 7, 8, or 9
+                  </div>
+                </div>
+                <div class="form-text text-info"><i class="fas fa-info-circle me-1"></i> Enter a 10-digit mobile number starting with 6, 7, 8, or 9</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="designation" class="form-label"><i class="fas fa-id-badge me-2"></i>Your Designation</label>
+                <input class="form-control" name="designation" id="designation" placeholder="Enter your designation (e.g., HR Manager, Talent Acquisition)" required value="{{ recruiter.designation if recruiter.designation else '' }}">
+                <div class="invalid-feedback">Please enter your designation.</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="profile_photo" class="form-label"><i class="fas fa-camera me-2"></i>Profile Photo (Optional)</label>
+                <input type="file" class="form-control" name="profile_photo" id="profile_photo" accept=".jpg,.jpeg,.png">
+                <div class="invalid-feedback">Please upload a valid image file.</div>
+                <div class="form-text">Maximum file size: 5MB. Accepted formats: JPG, JPEG, PNG.</div>
+              </div>
+              
+              {% if recruiter.profile_photo_url %}
+              <div class="current-photo mb-3">
+                <div class="d-flex align-items-center p-3 border rounded">
+                  <img src="{{ url_for('profile.profile_photo', filename=recruiter.profile_photo_url) }}" class="img-thumbnail me-3" alt="Profile Photo" style="width: 60px; height: 60px; object-fit: cover;">
+                  <div>
+                    <h6 class="mb-0">Current Photo</h6>
+                    <p class="mb-0 small text-muted">Uploaded on: {{ recruiter.photo_updated_at.strftime('%d %b %Y') if recruiter.photo_updated_at else 'Unknown' }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            
+            <!-- Company Information -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Company Information</h4>
+              
+              <div class="form-group mb-3">
+                <label for="company_name" class="form-label"><i class="fas fa-building me-2"></i>Company Name</label>
+                <input class="form-control" name="company_name" id="company_name" placeholder="Enter your company name" required value="{{ recruiter.company_name if recruiter.company_name else '' }}">
+                <div class="invalid-feedback">Please enter your company name.</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="company_website" class="form-label"><i class="fas fa-globe me-2"></i>Company Website</label>
+                <input class="form-control" type="url" name="company_website" id="company_website" placeholder="https://www.example.com" value="{{ recruiter.company_website if recruiter.company_website else '' }}">
+                <div class="form-text">Optional, but recommended for verification</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="linkedin_url" class="form-label"><i class="fab fa-linkedin me-2"></i>Company LinkedIn</label>
+                <input class="form-control" type="url" name="linkedin_url" id="linkedin_url" placeholder="https://www.linkedin.com/company/example" value="{{ recruiter.linkedin_url if recruiter.linkedin_url else '' }}">
+                <div class="form-text">Optional, but helps students research your company</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="industry" class="form-label"><i class="fas fa-industry me-2"></i>Industry</label>
+                <select class="form-control" name="industry" id="industry" required>
+                  <option value="" disabled {% if not recruiter.industry %}selected{% endif %}>Select your industry</option>
+                  <option value="Technology" {% if recruiter.industry == 'Technology' %}selected{% endif %}>Technology</option>
+                  <option value="Finance" {% if recruiter.industry == 'Finance' %}selected{% endif %}>Finance</option>
+                  <option value="Healthcare" {% if recruiter.industry == 'Healthcare' %}selected{% endif %}>Healthcare</option>
+                  <option value="Education" {% if recruiter.industry == 'Education' %}selected{% endif %}>Education</option>
+                  <option value="Manufacturing" {% if recruiter.industry == 'Manufacturing' %}selected{% endif %}>Manufacturing</option>
+                  <option value="Retail" {% if recruiter.industry == 'Retail' %}selected{% endif %}>Retail</option>
+                  <option value="Other" {% if recruiter.industry == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+                <div class="invalid-feedback">Please select your industry.</div>
+              </div>
+            </div>
+            
+
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save me-2"></i>Save Profile
+              </button>
+              {% if recruiter.profile_complete %}
+              <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+              </a>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+// Function to validate phone number and show X mark dynamically
+function validatePhoneNumber(input) {
+  const phoneNumber = input.value.trim();
+  const validStartDigits = ['6', '7', '8', '9'];
+  const isValid = phoneNumber.length > 0 && validStartDigits.includes(phoneNumber[0]);
+  
+  if (phoneNumber.length > 0) {
+    if (isValid) {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+    } else {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+    }
+  } else {
+    // If empty, remove both classes
+    input.classList.remove('is-valid');
+    input.classList.remove('is-invalid');
+  }
+}
+
+// Initialize validation on page load for pre-filled values
+document.addEventListener('DOMContentLoaded', function() {
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput && phoneInput.value) {
+    validatePhoneNumber(phoneInput);
+  }
+});
+</script>
+{% endblock %}

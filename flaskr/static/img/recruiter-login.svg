@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Recruiter Login Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="purpleGradient">
+            <stop stop-color="#4338CA" offset="0%"></stop>
+            <stop stop-color="#8B5CF6" offset="100%"></stop>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.2"/>
+        </filter>
+    </defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle fill="#F5F3FF" cx="150" cy="500" r="80"></circle>
+        <circle fill="#EDE9FE" cx="650" cy="150" r="100"></circle>
+        <circle fill="#DDD6FE" cx="400" cy="80" r="50"></circle>
+        
+        <!-- Office Building -->
+        <g transform="translate(500, 150)">
+            <rect fill="#4338CA" x="0" y="0" width="150" height="250" rx="5"></rect>
+            
+            <!-- Windows -->
+            <rect fill="#F5F3FF" x="20" y="30" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="60" y="30" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="100" y="30" width="30" height="30" rx="2"></rect>
+            
+            <rect fill="#F5F3FF" x="20" y="80" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="60" y="80" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="100" y="80" width="30" height="30" rx="2"></rect>
+            
+            <rect fill="#F5F3FF" x="20" y="130" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="60" y="130" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="100" y="130" width="30" height="30" rx="2"></rect>
+            
+            <rect fill="#F5F3FF" x="20" y="180" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="60" y="180" width="30" height="30" rx="2"></rect>
+            <rect fill="#F5F3FF" x="100" y="180" width="30" height="30" rx="2"></rect>
+            
+            <!-- Door -->
+            <rect fill="#8B5CF6" x="50" y="200" width="50" height="50" rx="2"></rect>
+            <rect fill="#4338CA" x="70" y="225" width="10" height="5" rx="2"></rect>
+        </g>
+        
+        <!-- Recruiter Character -->
+        <g transform="translate(350, 250)">
+            <!-- Head -->
+            <circle fill="#F8FAFC" cx="50" cy="50" r="40"></circle>
+            
+            <!-- Business Suit -->
+            <rect fill="#4338CA" x="25" y="90" width="50" height="100" rx="5"></rect>
+            <path d="M25,110 L75,110 L75,90 C75,90 65,100 50,100 C35,100 25,90 25,90 L25,110" fill="#8B5CF6"></path>
+            
+            <!-- Tie -->
+            <path d="M45,110 L55,110 L52,150 L48,150 L45,110" fill="#F5F3FF"></path>
+            
+            <!-- Arms -->
+            <rect fill="#4338CA" x="0" y="110" width="25" height="15" rx="5"></rect>
+            <rect fill="#4338CA" x="75" y="110" width="25" height="15" rx="5"></rect>
+            
+            <!-- Legs -->
+            <rect fill="#1F2937" x="30" y="190" width="15" height="60" rx="5"></rect>
+            <rect fill="#1F2937" x="55" y="190" width="15" height="60" rx="5"></rect>
+            
+            <!-- Briefcase -->
+            <rect fill="#8B5CF6" x="85" y="140" width="40" height="30" rx="5"></rect>
+            <rect fill="#4338CA" x="100" y="135" width="10" height="5" rx="2"></rect>
+        </g>
+        
+        <!-- Login Form -->
+        <g transform="translate(150, 200)" filter="url(#shadow)">
+            <rect fill="white" x="0" y="0" width="150" height="200" rx="10"></rect>
+            
+            <!-- Form Header -->
+            <rect fill="url(#purpleGradient)" x="0" y="0" width="150" height="40" rx="10 10 0 0"></rect>
+            <text font-family="Arial" font-size="14" font-weight="bold" fill="white" x="55" y="25">LOGIN</text>
+            
+            <!-- Username Field -->
+            <rect fill="#F8FAFC" x="20" y="60" width="110" height="30" rx="5"></rect>
+            <circle fill="#8B5CF6" cx="30" cy="75" r="5"></circle>
+            
+            <!-- Password Field -->
+            <rect fill="#F8FAFC" x="20" y="110" width="110" height="30" rx="5"></rect>
+            <circle fill="#8B5CF6" cx="30" cy="125" r="5"></circle>
+            
+            <!-- Login Button -->
+            <rect fill="url(#purpleGradient)" x="20" y="160" width="110" height="30" rx="5"></rect>
+            <text font-family="Arial" font-size="12" font-weight="bold" fill="white" x="55" y="178">SIGN IN</text>
+        </g>
+        
+        <!-- Job Posting Document -->
+        <g transform="translate(600, 350)">
+            <rect fill="white" x="0" y="0" width="100" height="150" rx="5" stroke="#8B5CF6" stroke-width="2"></rect>
+            
+            <line x1="20" y1="30" x2="80" y2="30" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="60" x2="80" y2="60" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="90" x2="80" y2="90" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="120" x2="80" y2="120" stroke="#E2E8F0" stroke-width="2"></line>
+            
+            <!-- Job Icon -->
+            <g transform="translate(50, 15)">
+                <circle fill="#8B5CF6" cx="0" cy="0" r="10"></circle>
+                <rect fill="white" x="-5" y="-5" width="10" height="10" rx="1"></rect>
+            </g>
+        </g>
+        
+        <!-- Decorative Elements -->
+        <circle fill="#8B5CF6" cx="650" cy="250" r="15"></circle>
+        <circle fill="#A78BFA" cx="680" cy="280" r="10"></circle>
+        <circle fill="#C4B5FD" cx="630" cy="290" r="8"></circle>
+        
+        <circle fill="#8B5CF6" cx="150" cy="350" r="12"></circle>
+        <circle fill="#A78BFA" cx="120" cy="380" r="8"></circle>
+        <circle fill="#C4B5FD" cx="170" cy="390" r="6"></circle>
+        
+        <!-- Connection Lines -->
+        <path d="M300,300 C350,250 450,250 500,300" stroke="#A78BFA" stroke-width="2" stroke-dasharray="5,5"></path>
+    </g>
+</svg>

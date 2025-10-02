@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradients and Filters -->
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    
+    <!-- Primary blue gradient -->
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    
+    <!-- Purple gradient -->
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#7e22ce" />
+    </linearGradient>
+    
+    <!-- Green gradient -->
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    
+    <!-- Orange gradient -->
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+    
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3" />
+    </filter>
+    
+    <!-- Pattern for background -->
+    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.3" />
+    </pattern>
+  </defs>
+  
+  <!-- Dark background with pattern -->
+  <rect width="600" height="400" fill="url(#bgGradient)" rx="20" ry="20" />
+  <rect width="600" height="400" fill="url(#gridPattern)" rx="20" ry="20" />
+  
+  <!-- Abstract connection network (3D effect) -->
+  <g opacity="0.7">
+    <!-- Main connection lines -->
+    <path d="M100,200 C150,100 250,300 300,150 C350,0 450,200 500,100" 
+          stroke="url(#blueGradient)" stroke-width="2" fill="none" filter="url(#glow)" />
+    <path d="M50,300 C150,250 200,100 300,200 C400,300 450,150 550,250" 
+          stroke="url(#purpleGradient)" stroke-width="2" fill="none" filter="url(#glow)" />
+    <path d="M150,350 C200,200 300,250 350,150 C400,50 500,150 550,50" 
+          stroke="url(#greenGradient)" stroke-width="2" fill="none" filter="url(#glow)" />
+  </g>
+  
+  <!-- Connection nodes -->
+  <g>
+    <!-- Student nodes (blue) -->
+    <circle cx="100" cy="200" r="8" fill="url(#blueGradient)" filter="url(#glow)" />
+    <circle cx="150" cy="350" r="8" fill="url(#blueGradient)" filter="url(#glow)" />
+    <circle cx="200" cy="100" r="8" fill="url(#blueGradient)" filter="url(#glow)" />
+    <circle cx="250" cy="300" r="8" fill="url(#blueGradient)" filter="url(#glow)" />
+    
+    <!-- Company nodes (purple) -->
+    <circle cx="300" cy="150" r="8" fill="url(#purpleGradient)" filter="url(#glow)" />
+    <circle cx="350" cy="150" r="8" fill="url(#purpleGradient)" filter="url(#glow)" />
+    <circle cx="400" cy="300" r="8" fill="url(#purpleGradient)" filter="url(#glow)" />
+    <circle cx="450" cy="150" r="8" fill="url(#purpleGradient)" filter="url(#glow)" />
+    <circle cx="500" cy="100" r="8" fill="url(#purpleGradient)" filter="url(#glow)" />
+  </g>
+  
+  <!-- Central floating platform (job board) -->
+  <g transform="translate(300, 200)" filter="url(#shadow)">
+    <!-- Platform base with 3D effect -->
+    <path d="M-100,-50 L100,-50 L80,-30 L-80,-30 Z" fill="#1e293b" />
+    <path d="M-80,-30 L80,-30 L80,30 L-80,30 Z" fill="#0f172a" />
+    <path d="M-80,30 L80,30 L100,50 L-100,50 Z" fill="#1e293b" />
+    
+    <!-- Glowing edge -->
+    <path d="M-100,-50 L100,-50 L80,-30 L-80,-30 Z" stroke="url(#blueGradient)" stroke-width="1.5" fill="none" />
+    <path d="M-80,-30 L80,-30 L80,30 L-80,30 Z" stroke="url(#blueGradient)" stroke-width="1.5" fill="none" />
+    <path d="M-80,30 L80,30 L100,50 L-100,50 Z" stroke="url(#blueGradient)" stroke-width="1.5" fill="none" />
+    
+    <!-- Holographic job listings -->
+    <g opacity="0.9">
+      <!-- Job listing 1 -->
+      <rect x="-70" y="-40" width="140" height="20" rx="2" fill="#334155" opacity="0.7" />
+      <rect x="-65" y="-35" width="60" height="4" rx="1" fill="#60a5fa" opacity="0.9" />
+      <rect x="-65" y="-28" width="40" height="3" rx="1" fill="#94a3b8" opacity="0.7" />
+      <circle cx="55" cy="-30" r="8" fill="url(#greenGradient)" opacity="0.8" />
+      <text x="55" y="-27" font-family="Arial" font-size="10" fill="white" text-anchor="middle">✓</text>
+      
+      <!-- Job listing 2 -->
+      <rect x="-70" y="-15" width="140" height="20" rx="2" fill="#334155" opacity="0.7" />
+      <rect x="-65" y="-10" width="50" height="4" rx="1" fill="#60a5fa" opacity="0.9" />
+      <rect x="-65" y="-3" width="35" height="3" rx="1" fill="#94a3b8" opacity="0.7" />
+      <circle cx="55" cy="-5" r="8" fill="url(#orangeGradient)" opacity="0.8" />
+      <text x="55" y="-2" font-family="Arial" font-size="10" fill="white" text-anchor="middle">⟳</text>
+      
+      <!-- Job listing 3 -->
+      <rect x="-70" y="10" width="140" height="20" rx="2" fill="#334155" opacity="0.7" />
+      <rect x="-65" y="15" width="55" height="4" rx="1" fill="#60a5fa" opacity="0.9" />
+      <rect x="-65" y="22" width="45" height="3" rx="1" fill="#94a3b8" opacity="0.7" />
+      <circle cx="55" cy="20" r="8" fill="url(#blueGradient)" opacity="0.8" />
+      <text x="55" y="23" font-family="Arial" font-size="10" fill="white" text-anchor="middle">+</text>
+    </g>
+  </g>
+  
+  <!-- Floating feature icons with glow effect -->
+  <g>
+    <!-- Student profile icon -->
+    <g transform="translate(120, 100)" filter="url(#shadow)">
+      <circle cx="0" cy="0" r="30" fill="#1e293b" />
+      <circle cx="0" cy="0" r="29" stroke="url(#blueGradient)" stroke-width="1" fill="none" filter="url(#glow)" />
+      
+      <!-- User icon -->
+      <circle cx="0" cy="-5" r="10" fill="none" stroke="#60a5fa" stroke-width="2" />
+      <path d="M-12,15 C-12,5 12,5 12,15" fill="none" stroke="#60a5fa" stroke-width="2" />
+      
+      <!-- Graduation cap -->
+      <path d="M-8,-20 L0,-25 L8,-20 L0,-15 Z" fill="#60a5fa" />
+      <line x1="0" y1="-15" x2="0" y2="-10" stroke="#60a5fa" stroke-width="1" />
+    </g>
+    
+    <!-- Job application icon -->
+    <g transform="translate(480, 100)" filter="url(#shadow)">
+      <circle cx="0" cy="0" r="30" fill="#1e293b" />
+      <circle cx="0" cy="0" r="29" stroke="url(#purpleGradient)" stroke-width="1" fill="none" filter="url(#glow)" />
+      
+      <!-- Document icon -->
+      <rect x="-12" y="-15" width="24" height="30" rx="2" fill="none" stroke="#c084fc" stroke-width="2" />
+      <line x1="-6" y1="-5" x2="6" y2="-5" stroke="#c084fc" stroke-width="2" />
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="#c084fc" stroke-width="2" />
+      <line x1="-6" y1="5" x2="6" y2="5" stroke="#c084fc" stroke-width="2" />
+    </g>
+    
+    <!-- Interview scheduling icon -->
+    <g transform="translate(120, 300)" filter="url(#shadow)">
+      <circle cx="0" cy="0" r="30" fill="#1e293b" />
+      <circle cx="0" cy="0" r="29" stroke="url(#greenGradient)" stroke-width="1" fill="none" filter="url(#glow)" />
+      
+      <!-- Calendar icon -->
+      <rect x="-15" y="-15" width="30" height="30" rx="2" fill="none" stroke="#34d399" stroke-width="2" />
+      <line x1="-15" y1="-5" x2="15" y2="-5" stroke="#34d399" stroke-width="1" />
+      <line x1="-5" y1="-15" x2="-5" y2="-10" stroke="#34d399" stroke-width="2" />
+      <line x1="5" y1="-15" x2="5" y2="-10" stroke="#34d399" stroke-width="2" />
+      <circle cx="-7" cy="5" r="3" fill="#34d399" />
+      <circle cx="7" cy="5" r="3" fill="#34d399" />
+    </g>
+    
+    <!-- Job filter icon -->
+    <g transform="translate(480, 300)" filter="url(#shadow)">
+      <circle cx="0" cy="0" r="30" fill="#1e293b" />
+      <circle cx="0" cy="0" r="29" stroke="url(#orangeGradient)" stroke-width="1" fill="none" filter="url(#glow)" />
+      
+      <!-- Filter icon -->
+      <path d="M-15,-10 L15,-10 L5,10 L5,15 L-5,15 L-5,10 Z" fill="none" stroke="#fb923c" stroke-width="2" />
+      <line x1="-10" y1="-5" x2="10" y2="-5" stroke="#fb923c" stroke-width="1" />
+      <line x1="-5" y1="0" x2="5" y2="0" stroke="#fb923c" stroke-width="1" />
+    </g>
+  </g>
+  
+  <!-- Central bridge connecting talent to opportunity -->
+  <g transform="translate(300, 200)">
+    <path d="M-150,-50 C-100,-100 100,-100 150,-50" stroke="url(#blueGradient)" stroke-width="3" fill="none" filter="url(#glow)" />
+    <path d="M-150,50 C-100,100 100,100 150,50" stroke="url(#purpleGradient)" stroke-width="3" fill="none" filter="url(#glow)" />
+    
+    <!-- Bridge supports -->
+    <line x1="-100" y1="-70" x2="-100" y2="70" stroke="#60a5fa" stroke-width="2" opacity="0.7" />
+    <line x1="-50" y1="-80" x2="-50" y2="80" stroke="#60a5fa" stroke-width="2" opacity="0.7" />
+    <line x1="0" y1="-85" x2="0" y2="85" stroke="#60a5fa" stroke-width="2" opacity="0.7" />
+    <line x1="50" y1="-80" x2="50" y2="80" stroke="#60a5fa" stroke-width="2" opacity="0.7" />
+    <line x1="100" y1="-70" x2="100" y2="70" stroke="#60a5fa" stroke-width="2" opacity="0.7" />
+  </g>
+  
+  <!-- Animated particles (static in SVG but suggest movement) -->
+  <g opacity="0.7">
+    <circle cx="150" cy="150" r="2" fill="#60a5fa" />
+    <circle cx="200" cy="250" r="2" fill="#60a5fa" />
+    <circle cx="250" cy="100" r="2" fill="#60a5fa" />
+    <circle cx="300" cy="300" r="2" fill="#60a5fa" />
+    <circle cx="350" cy="200" r="2" fill="#60a5fa" />
+    <circle cx="400" cy="150" r="2" fill="#60a5fa" />
+    <circle cx="450" cy="250" r="2" fill="#60a5fa" />
+    
+    <circle cx="180" cy="120" r="2" fill="#c084fc" />
+    <circle cx="230" cy="220" r="2" fill="#c084fc" />
+    <circle cx="280" cy="170" r="2" fill="#c084fc" />
+    <circle cx="330" cy="270" r="2" fill="#c084fc" />
+    <circle cx="380" cy="120" r="2" fill="#c084fc" />
+    <circle cx="430" cy="220" r="2" fill="#c084fc" />
+    <circle cx="480" cy="170" r="2" fill="#c084fc" />
+  </g>
+</svg>

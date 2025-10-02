@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Update Interview Result{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Update Interview Result</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="alert alert-info mb-4">
+            <div class="d-flex">
+              <div class="me-3">
+                <i class="fas fa-info-circle fa-2x"></i>
+              </div>
+              <div>
+                <h5 class="alert-heading">Important!</h5>
+                <p class="mb-0">Updating the interview result will change the application status. If the result is "Pass", the application will be marked as "Selected". If the result is "Fail", the application will be marked as "Rejected".</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="interview-summary mb-4">
+            <h5 class="border-bottom pb-2 mb-3">Interview Summary</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>Job:</strong> {{ interview.job.title }}</p>
+                <p><strong>Company:</strong> {{ interview.job.company_name }}</p>
+                <p><strong>Student:</strong> {{ interview.application.student_name }}</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Date & Time:</strong> {{ interview.interview_datetime.strftime('%d %b, %Y %H:%M') }}</p>
+                <p><strong>Type:</strong> {{ interview.interview_type }}</p>
+                <p><strong>Location:</strong> {{ interview.interview_location }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <form action="{{ url_for('applications.update_interview_result', interview_id=interview._id) }}" method="post">
+            <div class="mb-4">
+              <label for="result" class="form-label fw-bold">Result <span class="text-danger">*</span></label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="result" id="resultPass" value="Pass" required>
+                  <label class="form-check-label" for="resultPass">
+                    <span class="badge bg-success px-3 py-2">Pass</span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="result" id="resultFail" value="Fail" required>
+                  <label class="form-check-label" for="resultFail">
+                    <span class="badge bg-danger px-3 py-2">Fail</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="feedback" class="form-label fw-bold">Feedback</label>
+              <textarea class="form-control" id="feedback" name="feedback" rows="5" placeholder="Provide detailed feedback about the interview performance..."></textarea>
+              <div class="form-text">This feedback will be visible to the student.</div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+              <a href="{{ url_for('applications.interview_view', interview_id=interview._id) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i> Update Result
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

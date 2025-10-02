@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Profile - CareerBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <div>
+            <h3 class="mb-0">Student Profile</h3>
+            <p class="mb-0 small">
+              {% if g.user['user_type'] == 'student' %}
+                View your profile information
+              {% else %}
+                Student details and qualifications
+              {% endif %}
+            </p>
+          </div>
+          {% if g.user['user_type'] == 'student' and g.user['_id']|string == student._id|string %}
+          <a href="{{ url_for('profile.student_profile') }}" class="btn btn-light btn-sm">
+            <i class="fas fa-edit me-1"></i> Edit Profile
+          </a>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <!-- Personal Information -->
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-user-graduate me-2"></i>Personal Information
+            </h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-user me-2"></i>Full Name</div>
+                  <div class="field-value">{{ student.full_name if student.full_name else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-phone me-2"></i>Phone Number</div>
+                  <div class="field-value">{{ student.phone if student.phone else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-envelope me-2"></i>Email</div>
+                  <div class="field-value">{{ student.email }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-calendar-alt me-2"></i>Date of Birth</div>
+                  <div class="field-value">{{ student.dob.strftime('%d %b %Y') if student.dob else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-venus-mars me-2"></i>Gender</div>
+                  <div class="field-value">{{ student.gender if student.gender else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-map-marker-alt me-2"></i>Address</div>
+                  <div class="field-value">{{ student.address if student.address else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Academic Information -->
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-university me-2"></i>Academic Information
+            </h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-university me-2"></i>College/University</div>
+                  <div class="field-value">{{ student.college if student.college else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-code-branch me-2"></i>Branch/Department</div>
+                  <div class="field-value">{{ student.branch if student.branch else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-graduation-cap me-2"></i>Degree</div>
+                  <div class="field-value">{{ student.degree if student.degree else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-calendar me-2"></i>Current Year</div>
+                  <div class="field-value">{{ student.current_year if student.current_year else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-calendar-check me-2"></i>Graduation Year</div>
+                  <div class="field-value">{{ student.graduation_year if student.graduation_year else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-chart-line me-2"></i>CGPA</div>
+                  <div class="field-value">{{ student.cgpa if student.cgpa else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-percent me-2"></i>10th Marks</div>
+                  <div class="field-value">{{ student.tenth_marks|string + '%' if student.tenth_marks else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-percent me-2"></i>12th Marks</div>
+                  <div class="field-value">{{ student.twelfth_marks|string + '%' if student.twelfth_marks else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-exclamation-triangle me-2"></i>Backlogs</div>
+                  <div class="field-value">{{ student.backlogs if student.backlogs else '0' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Skills & Qualifications -->
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-tools me-2"></i>Skills & Qualifications
+            </h4>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-laptop-code me-2"></i>Technical Skills</div>
+                  <div class="field-value">{{ student.technical_skills if student.technical_skills else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-comments me-2"></i>Soft Skills</div>
+                  <div class="field-value">{{ student.soft_skills if student.soft_skills else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-certificate me-2"></i>Certifications</div>
+                  <div class="field-value">{{ student.certifications if student.certifications else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resume Section -->
+          {% if student.resume_url %}
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-file-alt me-2"></i>Resume
+            </h4>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="profile-field">
+                  <div class="field-label">
+                    {% if student.resume_url.endswith('.pdf') %}
+                      <i class="fas fa-file-pdf me-2"></i>PDF Resume
+                    {% elif student.resume_url.endswith('.doc') or student.resume_url.endswith('.docx') %}
+                      <i class="fas fa-file-word me-2"></i>Word Document
+                    {% elif student.resume_url.endswith('.jpg') or student.resume_url.endswith('.jpeg') %}
+                      <i class="fas fa-file-image me-2"></i>Image Resume
+                    {% else %}
+                      <i class="fas fa-file me-2"></i>Resume Document
+                    {% endif %}
+                  </div>
+                  <div class="field-value mb-3">
+                    Uploaded on: {{ student.resume_updated_at.strftime('%d %b %Y') if student.resume_updated_at else 'Unknown' }}
+                  </div>
+                  <div class="d-flex gap-2">
+                    {% if student.resume_url.endswith('.pdf') %}
+                    <a href="{{ url_for('profile.view_resume', student_id=student._id) }}" class="btn btn-primary" target="_blank">
+                      <i class="fas fa-file-pdf me-1"></i> View PDF
+                    </a>
+                    {% elif student.resume_url.endswith('.jpg') or student.resume_url.endswith('.jpeg') %}
+                    <a href="{{ url_for('profile.view_resume', student_id=student._id) }}" class="btn btn-primary" target="_blank">
+                      <i class="fas fa-image me-1"></i> View Image
+                    </a>
+                    {% elif student.resume_url.endswith('.doc') or student.resume_url.endswith('.docx') %}
+                    <div class="alert alert-info" role="alert">
+                      <i class="fas fa-info-circle me-1"></i> Word documents cannot be viewed directly in browser.
+                    </div>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('profile.download_resume', student_id=student._id) }}" class="btn btn-outline-primary">
+                      <i class="fas fa-download me-1"></i> Download
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          
+          <div class="d-grid gap-2">
+            {% if g.user['user_type'] == 'student' and g.user['_id']|string == student._id|string %}
+            <a href="{{ url_for('profile.student_profile') }}" class="btn btn-primary">
+              <i class="fas fa-edit me-2"></i>Edit Profile
+            </a>
+            {% endif %}
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .profile-field {
+    margin-bottom: 10px;
+  }
+  
+  .field-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+  
+  .field-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .section-title {
+    color: #495057;
+    font-size: 1.25rem;
+  }
+</style>
+{% endblock %}

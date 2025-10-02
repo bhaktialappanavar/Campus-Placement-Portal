@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Job Listings - CareerBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold text-primary mb-2">Job Listings</h1>
+            <p class="lead">Find the perfect job opportunity that matches your skills and qualifications.</p>
+        </div>
+        {% if g.user and g.user.user_type == 'recruiter' %}
+        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+            <a href="{{ url_for('jobs.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i>Post New Job
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filter Jobs</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('jobs.index') }}" method="get" id="filter-form">
+                        <!-- CGPA Filter -->
+                        <div class="mb-3">
+                            <label for="min_cgpa" class="form-label fw-bold">Minimum CGPA</label>
+                            <input type="range" class="form-range" min="0" max="10" step="0.1" id="min_cgpa" name="min_cgpa" value="{{ filters.min_cgpa or 0 }}" oninput="updateCgpaValue(this.value)">
+                            <div class="d-flex justify-content-between">
+                                <span>0</span>
+                                <span id="cgpa-value">{{ filters.min_cgpa or 0 }}</span>
+                                <span>10</span>
+                            </div>
+                        </div>
+
+                        <!-- Branch Filter -->
+                        <div class="mb-3">
+                            <label for="branch" class="form-label fw-bold">Branch</label>
+                            <select class="form-select" id="branch" name="branch">
+                                <option value="">All Branches</option>
+                                {% for branch in all_branches %}
+                                <option value="{{ branch }}" {% if filters.branch == branch %}selected{% endif %}>{{ branch }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Company Filter -->
+                        <div class="mb-3">
+                            <label for="company" class="form-label fw-bold">Company</label>
+                            <select class="form-select" id="company" name="company">
+                                <option value="">All Companies</option>
+                                {% for company in all_companies %}
+                                <option value="{{ company }}" {% if filters.company == company %}selected{% endif %}>{{ company }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Job Type Filter -->
+                        <div class="mb-3">
+                            <label for="job_type" class="form-label fw-bold">Job Type</label>
+                            <select class="form-select" id="job_type" name="job_type">
+                                <option value="">All Types</option>
+                                {% for job_type in all_job_types %}
+                                <option value="{{ job_type }}" {% if filters.job_type == job_type %}selected{% endif %}>{{ job_type }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="mb-3">
+                            <label for="location" class="form-label fw-bold">Location</label>
+                            <select class="form-select" id="location" name="location">
+                                <option value="">All Locations</option>
+                                {% for location in all_locations %}
+                                <option value="{{ location }}" {% if filters.location == location %}selected{% endif %}>{{ location }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Apply Filters
+                            </button>
+                            <a href="{{ url_for('jobs.index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-undo me-2"></i>Reset Filters
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="col-lg-9">
+            {% if jobs %}
+                <div class="job-count mb-3">
+                    <p class="text-muted">Showing {{ jobs|length }} job{{ 's' if jobs|length != 1 }} matching your criteria</p>
+                </div>
+                
+                <div class="row">
+                    {% for job in jobs %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm border-0 job-card {% if g.user and g.user.user_type == 'student' and job.is_eligible %}eligible{% elif g.user and g.user.user_type == 'student' and not job.is_eligible %}not-eligible{% endif %}">
+                            {% if g.user and g.user.user_type == 'student' %}
+                                {% if job.is_eligible %}
+                                <div class="eligibility-badge eligible">
+                                    <i class="fas fa-check-circle"></i> Eligible
+                                </div>
+                                {% else %}
+                                <div class="eligibility-badge not-eligible">
+                                    <i class="fas fa-times-circle"></i> Not Eligible
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="company-logo me-3">
+                                        {% if job.company_logo %}
+                                        <img src="{{ job.company_logo }}" alt="{{ job.company_name }}" class="img-fluid">
+                                        {% else %}
+                                        <div class="default-logo">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title mb-1">{{ job.title }}</h5>
+                                        <h6 class="company-name text-primary">{{ job.company_name }}</h6>
+                                    </div>
+                                </div>
+                                
+                                <div class="job-details mb-3">
+                                    <div class="detail">
+                                        <i class="fas fa-map-marker-alt text-secondary"></i>
+                                        <span>{{ job.location }}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <i class="fas fa-briefcase text-secondary"></i>
+                                        <span>{{ job.job_type }}</span>
+                                    </div>
+                                    {% if job.salary_range %}
+                                    <div class="detail">
+                                        <i class="fas fa-rupee-sign text-secondary"></i>
+                                        <span>{{ job.salary_range }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="eligibility-criteria">
+                                    <div class="criteria">
+                                        <i class="fas fa-graduation-cap text-secondary"></i>
+                                        <span>Min. CGPA: {{ job.min_cgpa }}</span>
+                                    </div>
+                                    <div class="criteria">
+                                        <i class="fas fa-code-branch text-secondary"></i>
+                                        <span>Branches: {{ job.eligible_branches|join(', ') }}</span>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="far fa-clock"></i> 
+                                        Posted {{ job.created_at.strftime('%d %b %Y') }}
+                                    </small>
+                                    <a href="{{ url_for('jobs.detail', id=job._id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No job listings found matching your criteria. Try adjusting your filters.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.job-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.job-card.eligible {
+    border-left: 4px solid #28a745 !important;
+}
+
+.job-card.not-eligible {
+    border-left: 4px solid #dc3545 !important;
+}
+
+.eligibility-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.eligibility-badge.eligible {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.eligibility-badge.not-eligible {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.company-logo {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.default-logo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #6c757d;
+}
+
+.company-name {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.job-details, .eligibility-criteria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.detail, .criteria {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+</style>
+
+<script>
+function updateCgpaValue(val) {
+    document.getElementById('cgpa-value').textContent = val;
+}
+
+// Initialize the CGPA value display
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the CGPA value display
+    updateCgpaValue(document.getElementById('min_cgpa').value);
+    
+    // Add event listener for the CGPA slider
+    const cgpaSlider = document.getElementById('min_cgpa');
+    cgpaSlider.addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
+    
+    // Auto-submit form when select filters change
+    const selectFilters = document.querySelectorAll('#filter-form select');
+    selectFilters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            document.getElementById('filter-form').submit();
+        });
+    });
+});
+</script>
+{% endblock %}

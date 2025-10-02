@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to CareerBridge - College Placement Portal{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <div class="auth-illustration">
+      <div class="illustration-content">
+        <img src="/static/img/auth-illustration.svg" alt="CareerBridge Illustration" onerror="this.src='/static/img/auth-illustration.png'; this.onerror=null;">
+        <div class="overlay-text">
+          <h2>CareerBridge</h2>
+          <p>Connecting talent with opportunity</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="auth-select-card">
+      <div class="auth-header">
+        <div class="auth-logo">
+          <i class="fas fa-graduation-cap"></i>
+          <span>CareerBridge</span>
+        </div>
+        <h1>Welcome!</h1>
+        <p class="subtitle">Choose how you want to continue</p>
+      </div>
+      
+      <div class="auth-options">
+        <div class="option-card student-card">
+          <div class="option-header">
+            <div class="option-icon">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="option-title">
+              <h3>Student</h3>
+              <p>Find your dream job</p>
+            </div>
+          </div>
+          <div class="option-features">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Browse job listings</li>
+              <li><i class="fas fa-check-circle"></i> Apply to opportunities</li>
+              <li><i class="fas fa-check-circle"></i> Track application status</li>
+            </ul>
+          </div>
+          <div class="option-buttons">
+            <a href="{{ url_for('auth.student_login') }}" class="btn btn-outline-primary btn-block">
+              <i class="fas fa-sign-in-alt"></i> Login as Student
+            </a>
+            <a href="{{ url_for('auth.student_register') }}" class="btn btn-primary btn-block">
+              <i class="fas fa-user-plus"></i> Register as Student
+            </a>
+          </div>
+        </div>
+        
+        <div class="option-divider">
+          <span>OR</span>
+        </div>
+        
+        <div class="option-card recruiter-card">
+          <div class="option-header">
+            <div class="option-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="option-title">
+              <h3>Recruiter</h3>
+              <p>Find top talent</p>
+            </div>
+          </div>
+          <div class="option-features">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Post job opportunities</li>
+              <li><i class="fas fa-check-circle"></i> Review applications</li>
+              <li><i class="fas fa-check-circle"></i> Schedule interviews</li>
+            </ul>
+          </div>
+          <div class="option-buttons">
+            <a href="{{ url_for('auth.recruiter_login') }}" class="btn btn-outline-primary btn-block">
+              <i class="fas fa-sign-in-alt"></i> Login as Recruiter
+            </a>
+            <a href="{{ url_for('auth.recruiter_register') }}" class="btn btn-primary btn-block">
+              <i class="fas fa-user-plus"></i> Register as Recruiter
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="auth-footer">
+        <p>By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Student and Recruiter specific styles */
+.student-card .option-features li i {
+  color: #3b82f6;
+}
+
+.recruiter-card .option-features li i {
+  color: #8b5cf6;
+}
+
+.option-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+/* Main Auth Container */
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a2463 0%, #3e92cc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* Auth Wrapper */
+.auth-wrapper {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+/* Left Side Illustration */
+.auth-illustration {
+  flex: 1;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.illustration-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-illustration img {
+  max-width: 90%;
+  max-height: 70%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  padding: 1rem;
+}
+
+.overlay-text h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-text p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Right Side Card */
+.auth-select-card {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.auth-logo i {
+  font-size: 2rem;
+  margin-right: 0.75rem;
+  color: #3b82f6;
+}
+
+.auth-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-header .subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+}
+
+/* Options */
+.auth-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.option-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.student-card {
+  border-left: 5px solid #3b82f6;
+}
+
+.recruiter-card {
+  border-left: 5px solid #8b5cf6;
+}
+
+.option-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.option-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.option-icon i {
+  font-size: 1.75rem;
+}
+
+.student-card .option-icon {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.recruiter-card .option-icon {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.option-title h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.option-title p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.option-features {
+  margin-bottom: 1.5rem;
+}
+
+.option-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.option-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: #334155;
+}
+
+.option-features li i {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.student-card .option-features li i {
+  color: #3b82f6;
+}
+
+.recruiter-card .option-features li i {
+  color: #8b5cf6;
+}
+
+.option-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.option-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.option-divider::before,
+.option-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.option-divider::before {
+  margin-right: 1rem;
+}
+
+.option-divider::after {
+  margin-left: 1rem;
+}
+
+/* Footer */
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.auth-footer a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .auth-wrapper {
+    flex-direction: column;
+    max-width: 600px;
+  }
+  
+  .auth-illustration {
+    display: none;
+  }
+  
+  .auth-select-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-container {
+    padding: 1rem;
+  }
+  
+  .auth-select-card {
+    padding: 1.5rem;
+  }
+  
+  .option-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .option-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+</style>
+{% endblock %}

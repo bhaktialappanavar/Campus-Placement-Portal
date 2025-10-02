@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Student Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Complete Your Student Profile</h3>
+          <p class="mb-0 small">Please provide your details to apply for jobs</p>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-3 text-center">
+              {% if student.profile_photo_url %}
+                <img src="{{ url_for('profile.profile_photo', filename=student.profile_photo_url) }}" class="img-thumbnail rounded-circle profile-img" alt="Profile Photo" style="width: 150px; height: 150px; object-fit: cover;">
+              {% else %}
+                <div class="profile-placeholder rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 150px; height: 150px; margin: 0 auto;">
+                  <i class="fas fa-user-circle fa-5x text-secondary"></i>
+                </div>
+              {% endif %}
+            </div>
+            <div class="col-md-9 d-flex align-items-center">
+              <div>
+                <h4>{{ student.full_name if student.full_name else 'Complete Your Profile' }}</h4>
+                <p class="text-muted mb-0">{{ student.email }}</p>
+                {% if student.profile_complete %}
+                  <span class="badge bg-success mt-2">Profile Complete</span>
+                {% else %}
+                  <span class="badge bg-warning mt-2">Profile Incomplete</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <!-- Personal Information -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Personal Information</h4>
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="full_name" class="form-label"><i class="fas fa-user me-2"></i>Full Name</label>
+                  <input class="form-control" name="full_name" id="full_name" placeholder="Enter your full name" required value="{{ student.full_name if student.full_name else '' }}">
+                  <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="phone" class="form-label"><i class="fas fa-phone me-2"></i>Contact Number</label>
+                  <div class="input-group has-validation">
+                    <span class="input-group-text">+91</span>
+                    <input class="form-control" type="tel" name="phone" id="phone" placeholder="Must start with 6, 7, 8, or 9" required pattern="[6-9][0-9]{9}" maxlength="10" value="{{ student.phone[3:] if student.phone else '' }}" oninput="validatePhoneNumber(this)">
+                    <div class="invalid-feedback">
+                      <i class="fas fa-times-circle me-1"></i> Phone number must start with 6, 7, 8, or 9
+                    </div>
+                  </div>
+                  <div class="form-text text-info"><i class="fas fa-info-circle me-1"></i> Enter a 10-digit mobile number starting with 6, 7, 8, or 9</div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="dob" class="form-label"><i class="fas fa-calendar-alt me-2"></i>Date of Birth</label>
+                  <input class="form-control" type="date" name="dob" id="dob" required value="{{ student.dob.strftime('%Y-%m-%d') if student.dob else '' }}">
+                  <div class="invalid-feedback">Please enter your date of birth.</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="gender" class="form-label"><i class="fas fa-venus-mars me-2"></i>Gender</label>
+                  <select class="form-control" name="gender" id="gender" required>
+                    <option value="" disabled {% if not student.gender %}selected{% endif %}>Select your gender</option>
+                    <option value="Male" {% if student.gender == 'Male' %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if student.gender == 'Female' %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if student.gender == 'Other' %}selected{% endif %}>Other</option>
+                    <option value="Prefer not to say" {% if student.gender == 'Prefer not to say' %}selected{% endif %}>Prefer not to say</option>
+                  </select>
+                  <div class="invalid-feedback">Please select your gender.</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="address" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Address (City/State)</label>
+                  <input class="form-control" name="address" id="address" placeholder="City, State" required value="{{ student.address if student.address else '' }}">
+                  <div class="invalid-feedback">Please enter your address.</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Academic Information -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Academic Information</h4>
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="college" class="form-label"><i class="fas fa-university me-2"></i>College/University Name</label>
+                  <input class="form-control" name="college" id="college" placeholder="Enter your college or university name" required value="{{ student.college if student.college else '' }}">
+                  <div class="invalid-feedback">Please enter your college name.</div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="branch" class="form-label"><i class="fas fa-code-branch me-2"></i>Branch/Department</label>
+                  <select class="form-control" name="branch" id="branch" required>
+                    <option value="" disabled {% if not student.branch %}selected{% endif %}>Select your branch</option>
+                    <option value="Computer Science" {% if student.branch == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                    <option value="Information Technology" {% if student.branch == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                    <option value="Electronics" {% if student.branch == 'Electronics' %}selected{% endif %}>Electronics</option>
+                    <option value="Electrical" {% if student.branch == 'Electrical' %}selected{% endif %}>Electrical</option>
+                    <option value="Mechanical" {% if student.branch == 'Mechanical' %}selected{% endif %}>Mechanical</option>
+                    <option value="Civil" {% if student.branch == 'Civil' %}selected{% endif %}>Civil</option>
+                    <option value="Chemical" {% if student.branch == 'Chemical' %}selected{% endif %}>Chemical</option>
+                    <option value="Biotechnology" {% if student.branch == 'Biotechnology' %}selected{% endif %}>Biotechnology</option>
+                    <option value="Other" {% if student.branch == 'Other' %}selected{% endif %}>Other</option>
+                  </select>
+                  <div class="invalid-feedback">Please select your branch.</div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="degree" class="form-label"><i class="fas fa-graduation-cap me-2"></i>Degree</label>
+                  <select class="form-control" name="degree" id="degree" required>
+                    <option value="" disabled {% if not student.degree %}selected{% endif %}>Select your degree</option>
+                    <option value="B.Tech" {% if student.degree == 'B.Tech' %}selected{% endif %}>B.Tech</option>
+                    <option value="B.E." {% if student.degree == 'B.E.' %}selected{% endif %}>B.E.</option>
+                    <option value="B.Sc" {% if student.degree == 'B.Sc' %}selected{% endif %}>B.Sc</option>
+                    <option value="M.Tech" {% if student.degree == 'M.Tech' %}selected{% endif %}>M.Tech</option>
+                    <option value="M.E." {% if student.degree == 'M.E.' %}selected{% endif %}>M.E.</option>
+                    <option value="M.Sc" {% if student.degree == 'M.Sc' %}selected{% endif %}>M.Sc</option>
+                    <option value="MBA" {% if student.degree == 'MBA' %}selected{% endif %}>MBA</option>
+                    <option value="BCA" {% if student.degree == 'BCA' %}selected{% endif %}>BCA</option>
+                    <option value="MCA" {% if student.degree == 'MCA' %}selected{% endif %}>MCA</option>
+                    <option value="Other" {% if student.degree == 'Other' %}selected{% endif %}>Other</option>
+                  </select>
+                  <div class="invalid-feedback">Please select your degree.</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="current_year" class="form-label"><i class="fas fa-calendar me-2"></i>Current Year</label>
+                  <select class="form-control" name="current_year" id="current_year" required>
+                    <option value="" disabled {% if not student.current_year %}selected{% endif %}>Select your current year</option>
+                    <option value="1st" {% if student.current_year == '1st' %}selected{% endif %}>1st Year</option>
+                    <option value="2nd" {% if student.current_year == '2nd' %}selected{% endif %}>2nd Year</option>
+                    <option value="3rd" {% if student.current_year == '3rd' %}selected{% endif %}>3rd Year</option>
+                    <option value="4th" {% if student.current_year == '4th' %}selected{% endif %}>4th Year</option>
+                    <option value="5th" {% if student.current_year == '5th' %}selected{% endif %}>5th Year</option>
+                    <option value="Completed" {% if student.current_year == 'Completed' %}selected{% endif %}>Completed</option>
+                  </select>
+                  <div class="invalid-feedback">Please select your current year.</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="graduation_year" class="form-label"><i class="fas fa-calendar-check me-2"></i>Expected Graduation Year</label>
+                  <select class="form-control" name="graduation_year" id="graduation_year" required>
+                    <option value="" disabled {% if not student.graduation_year %}selected{% endif %}>Select your graduation year</option>
+                    {% for year in range(2025, 2031) %}
+                      <option value="{{ year }}" {% if student.graduation_year == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-feedback">Please select your graduation year.</div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="cgpa" class="form-label"><i class="fas fa-chart-line me-2"></i>CGPA/Percentage</label>
+                  <input class="form-control" type="number" step="0.01" min="0" max="10" name="cgpa" id="cgpa" placeholder="Enter your CGPA (out of 10)" required value="{{ student.cgpa if student.cgpa else '' }}">
+                  <div class="form-text">Your CGPA is used to determine eligibility for certain job opportunities</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="tenth_marks" class="form-label"><i class="fas fa-percent me-2"></i>10th Marks (%)</label>
+                  <input class="form-control" type="number" step="0.01" min="0" max="100" name="tenth_marks" id="tenth_marks" placeholder="Enter your 10th percentage" value="{{ student.tenth_marks if student.tenth_marks else '' }}">
+                  <div class="form-text">Optional</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                  <label for="twelfth_marks" class="form-label"><i class="fas fa-percent me-2"></i>12th Marks (%)</label>
+                  <input class="form-control" type="number" step="0.01" min="0" max="100" name="twelfth_marks" id="twelfth_marks" placeholder="Enter your 12th percentage" value="{{ student.twelfth_marks if student.twelfth_marks else '' }}">
+                  <div class="form-text">Optional</div>
+                </div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="backlogs" class="form-label"><i class="fas fa-exclamation-triangle me-2"></i>Backlogs (if any)</label>
+                <input class="form-control" type="number" min="0" name="backlogs" id="backlogs" placeholder="Enter number of backlogs (if any)" value="{{ student.backlogs if student.backlogs else '0' }}">
+                <div class="form-text">Enter 0 if you don't have any backlogs</div>
+              </div>
+            </div>
+            
+            <!-- Skills & Qualifications -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Skills & Qualifications</h4>
+              
+              <div class="form-group mb-3">
+                <label for="technical_skills" class="form-label"><i class="fas fa-laptop-code me-2"></i>Technical Skills</label>
+                <textarea class="form-control" name="technical_skills" id="technical_skills" rows="3" placeholder="Enter your technical skills (e.g., Python, Java, ML, Web Dev)">{{ student.technical_skills if student.technical_skills else '' }}</textarea>
+                <div class="form-text">Separate skills with commas</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="soft_skills" class="form-label"><i class="fas fa-comments me-2"></i>Soft Skills</label>
+                <textarea class="form-control" name="soft_skills" id="soft_skills" rows="2" placeholder="Enter your soft skills (e.g., Communication, Leadership, Teamwork)">{{ student.soft_skills if student.soft_skills else '' }}</textarea>
+                <div class="form-text">Separate skills with commas</div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="certifications" class="form-label"><i class="fas fa-certificate me-2"></i>Certifications</label>
+                <textarea class="form-control" name="certifications" id="certifications" rows="2" placeholder="Enter your certifications (e.g., AWS Certified Developer, Google Cloud Engineer)">{{ student.certifications if student.certifications else '' }}</textarea>
+                <div class="form-text">Separate certifications with semicolons</div>
+              </div>
+            </div>
+            
+            <!-- Profile Photo & Resume Upload Section -->
+            <div class="form-section mb-4">
+              <h4 class="section-title border-bottom pb-2 mb-3">Profile Photo & Resume</h4>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label for="profile_photo" class="form-label"><i class="fas fa-camera me-2"></i>Profile Photo (Optional)</label>
+                    <input type="file" class="form-control" name="profile_photo" id="profile_photo" accept=".jpg,.jpeg,.png">
+                    <div class="invalid-feedback">Please upload a valid image file.</div>
+                    <div class="form-text">Maximum file size: 5MB. Accepted formats: JPG, JPEG, PNG.</div>
+                  </div>
+                  
+                  {% if student.profile_photo_url %}
+                  <div class="current-photo mb-3">
+                    <div class="d-flex align-items-center p-3 border rounded">
+                      <img src="{{ url_for('profile.profile_photo', filename=student.profile_photo_url) }}" class="img-thumbnail me-3" alt="Profile Photo" style="width: 60px; height: 60px; object-fit: cover;">
+                      <div>
+                        <h6 class="mb-0">Current Photo</h6>
+                        <p class="mb-0 small text-muted">Uploaded on: {{ student.photo_updated_at.strftime('%d %b %Y') if student.photo_updated_at else 'Unknown' }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span>Your resume is required for job applications. Recruiters will review your resume when considering your application.</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label for="resume" class="form-label"><i class="fas fa-file-alt me-2"></i>Upload Resume</label>
+                <input type="file" class="form-control" name="resume" id="resume" accept=".pdf,.doc,.docx,.jpg,.jpeg" {% if not student.resume_url %}required{% endif %}>
+                <div class="invalid-feedback">Please upload your resume in an accepted format.</div>
+                <div class="form-text">Maximum file size: 5MB. Accepted formats: PDF, Word (doc/docx), and JPEG files.</div>
+              </div>
+              
+              {% if student.resume_url %}
+              <div class="current-resume mb-3">
+                <div class="d-flex align-items-center p-3 border rounded">
+                  <i class="fas fa-file-alt text-primary fs-4 me-3"></i>
+                  <div>
+                    <h6 class="mb-0">Current Resume</h6>
+                    <p class="mb-0 small text-muted">Uploaded on: {{ student.resume_updated_at.strftime('%d %b %Y') if student.resume_updated_at else 'Unknown' }}</p>
+                  </div>
+                  <div class="ms-auto">
+                    <a href="{{ url_for('profile.download_resume', student_id=student._id) }}" class="btn btn-sm btn-outline-primary me-2">
+                      <i class="fas fa-download me-1"></i> View
+                    </a>
+                  </div>
+                </div>
+                <div class="form-text mt-2">Upload a new file to replace your current resume.</div>
+              </div>
+              {% endif %}
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save me-2"></i>Save Profile
+              </button>
+              {% if student.profile_complete %}
+              <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+              </a>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+// Function to validate phone number and show X mark dynamically
+function validatePhoneNumber(input) {
+  const phoneNumber = input.value.trim();
+  const validStartDigits = ['6', '7', '8', '9'];
+  const isValid = phoneNumber.length > 0 && validStartDigits.includes(phoneNumber[0]);
+  
+  if (phoneNumber.length > 0) {
+    if (isValid) {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+    } else {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+    }
+  } else {
+    // If empty, remove both classes
+    input.classList.remove('is-valid');
+    input.classList.remove('is-invalid');
+  }
+}
+
+// Initialize validation on page load for pre-filled values
+document.addEventListener('DOMContentLoaded', function() {
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput && phoneInput.value) {
+    validatePhoneNumber(phoneInput);
+  }
+});
+</script>
+{% endblock %}

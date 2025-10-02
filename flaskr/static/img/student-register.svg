@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Student Registration Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="blueGradient">
+            <stop stop-color="#1E3A8A" offset="0%"></stop>
+            <stop stop-color="#3B82F6" offset="100%"></stop>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.2"/>
+        </filter>
+    </defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle fill="#EFF6FF" cx="150" cy="500" r="80"></circle>
+        <circle fill="#DBEAFE" cx="650" cy="100" r="100"></circle>
+        <circle fill="#BFDBFE" cx="400" cy="80" r="50"></circle>
+        
+        <!-- Registration Form -->
+        <g transform="translate(150, 150)" filter="url(#shadow)">
+            <rect fill="white" x="0" y="0" width="200" height="300" rx="10"></rect>
+            
+            <!-- Form Header -->
+            <rect fill="url(#blueGradient)" x="0" y="0" width="200" height="50" rx="10 10 0 0"></rect>
+            <text font-family="Arial" font-size="16" font-weight="bold" fill="white" x="40" y="30">REGISTRATION</text>
+            
+            <!-- Form Fields -->
+            <rect fill="#F1F5F9" x="20" y="70" width="160" height="30" rx="5"></rect>
+            <circle fill="#3B82F6" cx="30" cy="85" r="5"></circle>
+            
+            <rect fill="#F1F5F9" x="20" y="120" width="160" height="30" rx="5"></rect>
+            <circle fill="#3B82F6" cx="30" cy="135" r="5"></circle>
+            
+            <rect fill="#F1F5F9" x="20" y="170" width="160" height="30" rx="5"></rect>
+            <circle fill="#3B82F6" cx="30" cy="185" r="5"></circle>
+            
+            <rect fill="#F1F5F9" x="20" y="220" width="160" height="30" rx="5"></rect>
+            <circle fill="#3B82F6" cx="30" cy="235" r="5"></circle>
+            
+            <!-- Register Button -->
+            <rect fill="url(#blueGradient)" x="20" y="270" width="160" height="40" rx="5"></rect>
+            <text font-family="Arial" font-size="14" font-weight="bold" fill="white" x="65" y="295">REGISTER</text>
+        </g>
+        
+        <!-- Student Character -->
+        <g transform="translate(500, 200)">
+            <!-- Head -->
+            <circle fill="#F8FAFC" cx="50" cy="50" r="40"></circle>
+            
+            <!-- Graduation Cap -->
+            <path d="M100,0 L50,-20 L0,0 L50,20 L100,0" fill="#1E40AF"></path>
+            <rect fill="#1E40AF" x="80" y="0" width="5" height="30"></rect>
+            <path d="M30,10 L70,10 L70,30 C70,40 50,50 50,50 C50,50 30,40 30,30 L30,10" fill="#1E40AF"></path>
+            
+            <!-- Body -->
+            <rect fill="#3B82F6" x="25" y="90" width="50" height="80" rx="10"></rect>
+            
+            <!-- Arms -->
+            <rect fill="#F8FAFC" x="0" y="100" width="25" height="10" rx="5"></rect>
+            <rect fill="#F8FAFC" x="75" y="100" width="45" height="10" rx="5"></rect>
+            
+            <!-- Hand holding pen -->
+            <rect fill="#F8FAFC" x="120" y="100" width="10" height="10" rx="5"></rect>
+            <rect fill="#1E40AF" x="130" y="95" width="20" height="3" rx="1"></rect>
+            
+            <!-- Legs -->
+            <rect fill="#1E40AF" x="30" y="170" width="15" height="50" rx="5"></rect>
+            <rect fill="#1E40AF" x="55" y="170" width="15" height="50" rx="5"></rect>
+        </g>
+        
+        <!-- Document with Checkmarks -->
+        <g transform="translate(450, 350)">
+            <rect fill="white" x="0" y="0" width="120" height="150" rx="5" stroke="#3B82F6" stroke-width="2"></rect>
+            
+            <line x1="20" y1="30" x2="100" y2="30" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="60" x2="100" y2="60" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="90" x2="100" y2="90" stroke="#E2E8F0" stroke-width="2"></line>
+            <line x1="20" y1="120" x2="100" y2="120" stroke="#E2E8F0" stroke-width="2"></line>
+            
+            <!-- Checkmarks -->
+            <g transform="translate(30, 20)">
+                <circle fill="#3B82F6" cx="0" cy="0" r="8"></circle>
+                <path d="M-3,0 L-1,2 L3,-2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+            
+            <g transform="translate(30, 50)">
+                <circle fill="#3B82F6" cx="0" cy="0" r="8"></circle>
+                <path d="M-3,0 L-1,2 L3,-2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+        
+        <!-- Decorative Elements -->
+        <circle fill="#3B82F6" cx="650" cy="350" r="15"></circle>
+        <circle fill="#60A5FA" cx="680" cy="380" r="10"></circle>
+        <circle fill="#93C5FD" cx="630" cy="390" r="8"></circle>
+        
+        <circle fill="#3B82F6" cx="150" cy="100" r="12"></circle>
+        <circle fill="#60A5FA" cx="120" cy="130" r="8"></circle>
+        <circle fill="#93C5FD" cx="170" cy="140" r="6"></circle>
+        
+        <!-- Connection Lines -->
+        <path d="M350,300 C400,250 450,250 500,300" stroke="#60A5FA" stroke-width="2" stroke-dasharray="5,5"></path>
+    </g>
+</svg>

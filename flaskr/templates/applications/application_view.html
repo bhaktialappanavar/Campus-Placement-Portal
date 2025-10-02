@@ -1,0 +1,960 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Application Details{% endblock %}</h1>
+{% endblock %}
+
+{% block styles %}
+<style>
+  /* Custom styles for the application view page */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+  }
+  
+  .application-header {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .application-header .status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 500;
+  }
+  
+  .avatar-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  .info-card {
+    height: 100%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+    transition: transform 0.2s;
+  }
+  
+  .info-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .info-card .card-header {
+    border-bottom: none;
+    padding: 1.25rem 1.5rem;
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  
+  .info-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .info-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .info-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+  }
+  
+  .info-value {
+    font-weight: 500;
+  }
+  
+  .resume-viewer {
+    width: 100%;
+    height: 700px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .resume-viewer.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    border: none;
+  }
+  
+  .resume-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .resume-control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .pdf-control-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    list-style: none;
+    margin: 0;
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+  
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+  
+  .timeline-marker {
+    position: absolute;
+    left: -1.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+  }
+  
+  .timeline-item:not(:last-child):after {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 1rem;
+    height: calc(100% - 1rem);
+    width: 2px;
+    background: #e9ecef;
+  }
+  
+  .timeline-content {
+    padding-bottom: 1rem;
+  }
+  
+  /* Centered action buttons styles */
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .action-buttons {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .action-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin-top: 1rem;
+  }
+  
+  /* Status selector styles */
+  .status-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  
+  .status-option {
+    margin: 0;
+  }
+  
+  .status-option .form-check-input {
+    display: none;
+  }
+  
+  .status-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .status-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  
+  .status-text {
+    font-weight: 500;
+  }
+  
+  .status-option .form-check-input:checked + .status-card {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 2px #4e73df;
+    background-color: #f8f9fa;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+      
+      <!-- Job Information -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-gradient-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Job Information</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Job Title and Company -->
+          <div class="mb-3">
+            <h4 class="fw-bold mb-1">{{ job.title }}</h4>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-building me-2 text-muted"></i>
+              <span class="fw-medium">{{ job.company_name }}</span>
+              <span class="mx-2 text-muted">|</span>
+              <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+              <span>{{ job.location }}</span>
+            </div>
+          </div>
+          
+          <!-- Job Details -->
+          <div class="row mb-3">
+            <div class="col-md-4 mb-2">
+              <div class="job-detail-item p-2 bg-light rounded">
+                <div class="text-muted small">Job Type</div>
+                <div class="fw-medium">
+                  <i class="fas fa-briefcase me-1 text-primary"></i>
+                  {{ job.job_type }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="job-detail-item p-2 bg-light rounded">
+                <div class="text-muted small">Minimum CGPA</div>
+                <div class="fw-medium">
+                  <i class="fas fa-graduation-cap me-1 text-primary"></i>
+                  {{ job.min_cgpa }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="job-detail-item p-2 bg-light rounded">
+                <div class="text-muted small">Application Deadline</div>
+                <div class="fw-medium">
+                  <i class="fas fa-calendar-alt me-1 text-primary"></i>
+                  {{ job.application_deadline.strftime('%d %b, %Y') }}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {% if job.description %}
+          <!-- Job Description (truncated) -->
+          <div class="job-description mb-3">
+            <h6 class="fw-bold">Job Description</h6>
+            <p class="text-muted mb-0">{{ job.description|truncate(150) }}</p>
+          </div>
+          {% endif %}
+        </div>
+        
+        <div class="col-lg-4 d-flex align-items-center">
+          <div class="w-100 text-center text-lg-end mt-3 mt-lg-0">
+            <a href="{{ url_for('jobs.detail', id=job._id) }}" class="btn btn-primary">
+              <i class="fas fa-external-link-alt me-1"></i> View Full Job Details
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    <!-- Left Column: Student Information -->
+    <div class="col-lg-4">
+      <div class="card info-card mb-4 shadow-sm border-0">
+        <div class="card-header bg-gradient-primary text-white">
+          <h5 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Student Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="info-item">
+            <div class="info-label"><i class="fas fa-user me-2 text-primary"></i>Full Name</div>
+            <div class="info-value fw-medium">{{ application.student_name }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label"><i class="fas fa-envelope me-2 text-primary"></i>Email Address</div>
+            <div class="info-value">{{ application.student_email }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label"><i class="fas fa-phone me-2 text-primary"></i>Phone Number</div>
+            <div class="info-value">{{ application.student_phone }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label"><i class="fas fa-code-branch me-2 text-primary"></i>Branch</div>
+            <div class="info-value">{{ application.student_branch }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label"><i class="fas fa-graduation-cap me-2 text-primary"></i>CGPA</div>
+            <div class="info-value fw-bold">{{ application.student_cgpa }}</div>
+          </div>
+          <div class="mt-3">
+            <a href="{{ url_for('profile.student_view', student_id=application.student_id) }}" class="btn btn-outline-primary w-100">
+              <i class="fas fa-user me-1"></i> View Full Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card info-card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-history me-2"></i>Application Timeline</h5>
+        </div>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="timeline-item">
+              <div class="timeline-marker bg-primary"></div>
+              <div class="timeline-content">
+                <h6 class="mb-0">Application Submitted</h6>
+                <p class="text-muted small mb-0">{{ application.created_at.strftime('%d %b, %Y %H:%M') }}</p>
+              </div>
+            </li>
+            
+            {% if application.get('status_updated_at') and application.status != 'Applied' %}
+            <li class="timeline-item">
+              <div class="timeline-marker 
+                {% if application.status == 'Shortlisted' %}bg-info
+                {% elif application.status == 'Interview Scheduled' %}bg-primary
+                {% elif application.status == 'Selected' %}bg-success
+                {% elif application.status == 'Rejected' %}bg-danger
+                {% else %}bg-secondary{% endif %}"></div>
+              <div class="timeline-content">
+                <h6 class="mb-0">Status Updated to {{ application.status }}</h6>
+                <p class="text-muted small mb-0">{{ application.status_updated_at.strftime('%d %b, %Y %H:%M') }}</p>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Column: Resume Viewer -->
+    <div class="col-lg-8">
+      <div class="card info-card mb-4 shadow-sm border-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            {% if file_type == 'pdf' %}
+              <i class="fas fa-file-pdf me-2"></i>PDF Resume
+            {% elif file_type in ['jpg', 'jpeg'] %}
+              <i class="fas fa-file-image me-2"></i>Image Resume
+            {% elif file_type in ['doc', 'docx'] %}
+              <i class="fas fa-file-word me-2"></i>Word Document
+            {% else %}
+              <i class="fas fa-file-alt me-2"></i>Resume
+            {% endif %}
+          </h5>
+          <div class="d-flex gap-2">
+            {% if file_type == 'pdf' %}
+            <a href="{{ url_for('applications.view_pdf', application_id=application._id) }}" class="btn btn-sm btn-primary" target="_blank">
+              <i class="fas fa-file-pdf me-1"></i> View PDF
+            </a>
+            {% elif file_type in ['jpg', 'jpeg'] %}
+            <a href="{{ url_for('applications.view_pdf', application_id=application._id) }}" class="btn btn-sm btn-primary" target="_blank">
+              <i class="fas fa-image me-1"></i> View Image
+            </a>
+
+            {% elif file_type in ['doc', 'docx'] %}
+            <div class="alert alert-info py-1 px-3 mb-0">
+              <i class="fas fa-info-circle me-1"></i> Download Word document to view it
+            </div>
+            <a href="{{ url_for('profile.download_resume', student_id=application.student_id) }}" class="btn btn-sm btn-primary">
+              <i class="fas fa-file-word me-1"></i> Download Word
+            </a>
+            {% endif %}
+            
+            <a href="{{ url_for('profile.download_resume', student_id=application.student_id) }}" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-download me-1"></i> Download
+            </a>
+            
+            <!-- AI Resume Summary Button -->
+            <button type="button" id="aiSummaryBtn" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#aiSummaryModal">
+              <i class="fas fa-robot me-1"></i> AI Summary
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-3 position-relative">
+          <div id="resumeContainer" class="position-relative">
+            <div class="resume-controls">
+              <button type="button" id="zoomIn" class="resume-control-btn" title="Zoom In">
+                <i class="fas fa-search-plus"></i>
+              </button>
+              <button type="button" id="zoomOut" class="resume-control-btn" title="Zoom Out">
+                <i class="fas fa-search-minus"></i>
+              </button>
+              <button type="button" id="fullscreenToggle" class="resume-control-btn" title="Toggle Fullscreen">
+                <i class="fas fa-expand"></i>
+              </button>
+            </div>
+            <div id="fileTypeMessage" class="alert alert-info text-center mb-0 d-none">
+              <p class="mb-2"><i class="fas fa-info-circle me-2"></i><span id="fileTypeText"></span></p>
+              <a href="{{ url_for('profile.download_resume', student_id=application.student_id) }}" class="btn btn-sm btn-primary">
+                <i class="fas fa-download me-1"></i> Download File
+              </a>
+              <a href="{{ url_for('profile.view_resume', student_id=application.student_id) }}" class="btn btn-sm btn-secondary" target="_blank">
+                <i class="fas fa-external-link-alt me-1"></i> Open in New Tab
+              </a>
+            </div>
+            
+            <!-- PDF Viewer -->
+            {% if file_type == 'pdf' %}
+            <iframe id="pdfViewer" src="{{ url_for('profile.view_resume', student_id=application.student_id) }}" class="resume-viewer" title="PDF Viewer" style="display: none;"></iframe>
+            {% endif %}
+            
+            <!-- Image Viewer -->
+            {% if file_type in ['jpg', 'jpeg'] %}
+            <div id="imageViewer" class="resume-viewer text-center" style="display: none; overflow: auto; padding: 20px;">
+              <img id="resumeImage" src="{{ url_for('profile.view_resume', student_id=application.student_id) }}" alt="Resume Image" style="max-width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: inline-block;">
+            </div>
+            {% endif %}
+            
+            <!-- Word Document Message -->
+            {% if file_type in ['doc', 'docx'] %}
+            <div id="wordDocMessage" class="resume-viewer text-center" style="padding: 30px;">
+              <div class="p-4 bg-light rounded">
+                <i class="fas fa-file-word text-primary" style="font-size: 48px;"></i>
+                <h4 class="mt-3">Microsoft Word Document</h4>
+                <p class="text-muted">This resume is in Microsoft Word format and cannot be displayed directly in the browser.</p>
+                <div class="mt-3">
+                  <a href="{{ url_for('profile.download_resume', student_id=application.student_id) }}" class="btn btn-primary">
+                    <i class="fas fa-download me-1"></i> Download Document
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            
+            <!-- Default Viewer (fallback) -->
+            {% if file_type not in ['pdf', 'jpg', 'jpeg', 'doc', 'docx'] %}
+            <iframe id="defaultViewer" src="{{ url_for('profile.view_resume', student_id=application.student_id) }}" class="resume-viewer" title="Resume Viewer" style="display: none;"></iframe>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Action Buttons Section -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-light">
+      <h5 class="mb-0"><i class="fas fa-tasks me-2 text-primary"></i>Application Actions</h5>
+    </div>
+    <div class="card-body text-center p-4">
+      <p class="text-muted mb-4">Manage this application with the following actions</p>
+      <div class="d-flex justify-content-center flex-wrap gap-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal">
+          <i class="fas fa-edit me-2"></i> Update Status
+        </button>
+        {% if application.status == 'Shortlisted' %}
+        <a href="{{ url_for('applications.schedule_interview', application_id=application._id) }}" class="btn btn-info">
+          <i class="fas fa-calendar-alt me-2"></i> Schedule Interview
+        </a>
+        {% endif %}
+        {% if application.status == 'Selected' %}
+        <a href="{{ url_for('applications.create_interview', application_id=application._id) }}" class="btn btn-success">
+          <i class="fas fa-calendar-check me-2"></i> Create Interview
+        </a>
+        {% endif %}
+        <a href="{{ url_for('applications.job_applications', job_id=job._id) }}" class="btn btn-secondary">
+          <i class="fas fa-arrow-left me-2"></i> Back to Applications
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Update Status Modal -->
+  <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-gradient-primary text-white">
+          <h5 class="modal-title" id="updateStatusModalLabel"><i class="fas fa-edit me-2"></i>Update Application Status</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{{ url_for('applications.update_status', application_id=application._id) }}" method="post">
+          <div class="modal-body p-4">
+            <div class="text-center mb-4">
+              <div class="avatar-circle bg-light text-primary mx-auto mb-3 d-flex align-items-center justify-content-center">
+                <i class="fas fa-user-check fa-2x"></i>
+              </div>
+              <h5>{{ application.student_name }}</h5>
+              <p class="text-muted">Update the application status for this candidate</p>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold">Select New Status</label>
+              <div class="status-selector">
+                <div class="form-check status-option">
+                  <input class="form-check-input status-radio" type="radio" name="status" id="statusApplied" value="Applied" {% if application.status == 'Applied' %}checked{% endif %}>
+                  <label class="form-check-label status-card" for="statusApplied">
+                    <div class="status-icon bg-secondary text-white">
+                      <i class="fas fa-hourglass-start"></i>
+                    </div>
+                    <div class="status-text">Applied</div>
+                  </label>
+                </div>
+                
+                <div class="form-check status-option">
+                  <input class="form-check-input status-radio" type="radio" name="status" id="statusShortlisted" value="Shortlisted" {% if application.status == 'Shortlisted' %}checked{% endif %}>
+                  <label class="form-check-label status-card" for="statusShortlisted">
+                    <div class="status-icon bg-info text-white">
+                      <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="status-text">Shortlisted</div>
+                  </label>
+                </div>
+                
+                <div class="form-check status-option">
+                  <input class="form-check-input status-radio" type="radio" name="status" id="statusSelected" value="Selected" {% if application.status == 'Selected' %}checked{% endif %}>
+                  <label class="form-check-label status-card" for="statusSelected">
+                    <div class="status-icon bg-success text-white">
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="status-text">Selected</div>
+                  </label>
+                </div>
+                
+                <div class="form-check status-option">
+                  <input class="form-check-input status-radio" type="radio" name="status" id="statusRejected" value="Rejected" {% if application.status == 'Rejected' %}checked{% endif %}>
+                  <label class="form-check-label status-card" for="statusRejected">
+                    <div class="status-icon bg-danger text-white">
+                      <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="status-text">Rejected</div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-info mt-3">
+              <i class="fas fa-info-circle me-2"></i>
+              <strong>Note:</strong> When you change the status to "Shortlisted" or "Selected", an SMS notification will be automatically sent to the student if they have a valid phone number.
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update Status</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Resume Summary Modal -->
+<div class="modal fade" id="aiSummaryModal" tabindex="-1" aria-labelledby="aiSummaryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-gradient-primary text-white">
+        <h5 class="modal-title" id="aiSummaryModalLabel"><i class="fas fa-robot me-2"></i>AI Resume Summary</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div id="summaryLoading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3">Analyzing resume with AI... This may take a moment.</p>
+        </div>
+        <div id="summaryContent" class="d-none">
+          <div class="card mb-3 border-0 bg-light">
+            <div class="card-body">
+              <h6 class="fw-bold mb-3"><i class="fas fa-user-graduate me-2 text-primary"></i>Candidate Summary</h6>
+              <div id="candidateSummary" class="p-3 bg-white rounded">
+                <!-- AI-generated summary will be inserted here -->
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3 border-0 bg-light">
+            <div class="card-body">
+              <h6 class="fw-bold mb-3"><i class="fas fa-list-check me-2 text-primary"></i>Key Skills</h6>
+              <div id="keySkills" class="p-3 bg-white rounded">
+                <!-- AI-generated skills will be inserted here -->
+              </div>
+            </div>
+          </div>
+          <div class="card border-0 bg-light">
+            <div class="card-body">
+              <h6 class="fw-bold mb-3"><i class="fas fa-briefcase me-2 text-primary"></i>Job Fit Analysis</h6>
+              <div id="jobFitAnalysis" class="p-3 bg-white rounded">
+                <!-- AI-generated job fit analysis will be inserted here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="summaryError" class="alert alert-danger d-none" role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          <span id="errorMessage">An error occurred while generating the summary.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="regenerateSummaryBtn" class="btn btn-primary d-none">
+          <i class="fas fa-sync-alt me-1"></i> Regenerate Summary
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Pass server-side variables to JavaScript -->
+<script type="text/javascript">
+  // Pre-define variables from server-side to avoid Jinja2 template syntax in JavaScript
+  var RESUME_VIEW_URL = '{{ url_for("profile.view_resume", student_id=application.student_id) }}';
+  var SERVER_RESUME_URL = "{% if application.resume_url %}{{ application.resume_url }}{% else %}{% endif %}";
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Resume Viewer Controls
+    const pdfViewer = document.getElementById('pdfViewer');
+    const imageViewer = document.getElementById('imageViewer');
+    const wordViewer = document.getElementById('wordViewer');
+    const defaultViewer = document.getElementById('defaultViewer');
+    const resumeImage = document.getElementById('resumeImage');
+    // Toggle view button removed
+    const fullscreenToggleBtn = document.getElementById('fullscreenToggle');
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+    const resumeContainer = document.getElementById('resumeContainer');
+    const fileTypeMessage = document.getElementById('fileTypeMessage');
+    const fileTypeText = document.getElementById('fileTypeText');
+    const openWithBtn = document.getElementById('openWithBtn');
+    
+    let isFullscreen = false;
+    let currentScale = 1.0;
+    let activeViewer = null;
+    
+    // Function to detect file type without making network requests
+    async function detectFileType() {
+      try {
+        // Get file type from server-side variable
+        const fileType = '{{ file_type }}';
+        
+        if (fileType === 'pdf') {
+          return 'pdf';
+        } else if (['doc', 'docx'].includes(fileType)) {
+          return 'word';
+        } else if (['jpg', 'jpeg'].includes(fileType)) {
+          return 'image';
+        }
+        
+        // Fallback: check the file extension from the resume_url if available
+        if (SERVER_RESUME_URL) {
+          if (SERVER_RESUME_URL.endsWith('.pdf')) {
+            return 'pdf';
+          } else if (SERVER_RESUME_URL.endsWith('.doc') || SERVER_RESUME_URL.endsWith('.docx')) {
+            return 'word';
+          } else if (SERVER_RESUME_URL.endsWith('.jpg') || SERVER_RESUME_URL.endsWith('.jpeg')) {
+            return 'image';
+          }
+        }
+        
+        return 'unknown';
+      } catch (error) {
+        console.error('Error detecting file type:', error);
+        return 'unknown';
+      }
+    }
+    
+    // Function to show the appropriate viewer based on file type
+    function showViewer(fileType) {
+      // Get all viewer elements
+      const pdfViewer = document.getElementById('pdfViewer');
+      const imageViewer = document.getElementById('imageViewer');
+      const wordDocMessage = document.getElementById('wordDocMessage');
+      const defaultViewer = document.getElementById('defaultViewer');
+      
+      // Hide the file type message
+      if (fileTypeMessage) {
+        fileTypeMessage.classList.add('d-none');
+      }
+      
+      // Reset active viewer
+      activeViewer = null;
+      
+      // Hide all viewers that exist
+      if (pdfViewer) pdfViewer.style.display = 'none';
+      if (imageViewer) imageViewer.style.display = 'none';
+      if (defaultViewer) defaultViewer.style.display = 'none';
+      
+      // Show the appropriate viewer based on file type
+      switch (fileType) {
+        case 'pdf':
+          if (pdfViewer) {
+            pdfViewer.style.display = 'block';
+            activeViewer = pdfViewer;
+            // Enable zoom controls
+            zoomInBtn.disabled = false;
+            zoomOutBtn.disabled = false;
+          }
+          break;
+          
+        case 'image':
+          if (imageViewer) {
+            imageViewer.style.display = 'block';
+            activeViewer = resumeImage;
+            // Enable zoom controls
+            zoomInBtn.disabled = false;
+            zoomOutBtn.disabled = false;
+          }
+          break;
+          
+        case 'word':
+          // Word documents are handled separately with direct download
+          // No need to do anything as the wordDocMessage is already visible
+          // Disable zoom controls
+          zoomInBtn.disabled = true;
+          zoomOutBtn.disabled = true;
+          break;
+          
+        default:
+          // Unknown file type
+          if (defaultViewer) {
+            defaultViewer.style.display = 'block';
+            activeViewer = defaultViewer;
+            // Show file type message if it exists
+            if (fileTypeMessage) {
+              fileTypeMessage.classList.remove('d-none');
+              if (fileTypeText) {
+                fileTypeText.textContent = 'This file type may not display correctly in the browser. Please download to view.';
+              }
+            }
+            // Disable zoom controls
+            zoomInBtn.disabled = true;
+            zoomOutBtn.disabled = true;
+          }
+          break;
+      }
+    }
+    
+    // Detect and show the appropriate viewer when page loads
+    detectFileType().then(fileType => {
+      showViewer(fileType);
+      
+      // No Word document viewer functionality needed
+    });
+
+    
+    // Toggle view button has been removed
+    
+    // Fullscreen toggle button inside the resume viewer
+    fullscreenToggleBtn.addEventListener('click', function() {
+      if (activeViewer) {
+        // Toggle fullscreen class on the active viewer
+        if (activeViewer === resumeImage) {
+          // For images, apply to the container
+          imageViewer.classList.toggle('fullscreen');
+          isFullscreen = imageViewer.classList.contains('fullscreen');
+        } else {
+          // For iframes and other elements
+          activeViewer.classList.toggle('fullscreen');
+          isFullscreen = activeViewer.classList.contains('fullscreen');
+        }
+        
+        // Update button icon
+        if (isFullscreen) {
+          fullscreenToggleBtn.innerHTML = '<i class="fas fa-compress"></i>';
+          document.body.style.overflow = 'hidden';
+        } else {
+          fullscreenToggleBtn.innerHTML = '<i class="fas fa-expand"></i>';
+          document.body.style.overflow = '';
+        }
+      }
+    });
+    
+    // Zoom in button
+    zoomInBtn.addEventListener('click', function() {
+      currentScale += 0.1;
+      applyZoom();
+    });
+    
+    // Zoom out button
+    zoomOutBtn.addEventListener('click', function() {
+      if (currentScale > 0.5) {
+        currentScale -= 0.1;
+        applyZoom();
+      }
+    });
+    
+    // Apply zoom to the active viewer
+    function applyZoom() {
+      if (!activeViewer) return;
+      
+      if (activeViewer === resumeImage) {
+        // For images, directly apply transform to the image element
+        resumeImage.style.transform = `scale(${currentScale})`;
+        resumeImage.style.transformOrigin = 'center top';
+      } else if (activeViewer === pdfViewer || activeViewer === defaultViewer) {
+        // For iframes (PDF and default viewer)
+        try {
+          // Try to access iframe content
+          const iframeDoc = activeViewer.contentDocument || activeViewer.contentWindow.document;
+          const content = iframeDoc.body;
+          
+          if (content) {
+            content.style.transformOrigin = 'center top';
+            content.style.transform = `scale(${currentScale})`;
+          }
+        } catch (e) {
+          // If we can't access the iframe content due to same-origin policy,
+          // apply transform to the iframe itself
+          activeViewer.style.transform = `scale(${currentScale})`;
+          activeViewer.style.transformOrigin = 'center top';
+        }
+      }
+      // Word viewer doesn't support zoom, so we don't need to handle it
+    }
+    
+    // Handle escape key to exit fullscreen
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isFullscreen) {
+        // Exit fullscreen for the active viewer
+        if (activeViewer === resumeImage) {
+          imageViewer.classList.remove('fullscreen');
+        } else if (activeViewer) {
+          activeViewer.classList.remove('fullscreen');
+        }
+        
+        isFullscreen = false;
+        fullscreenToggleBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        togglePdfViewBtn.innerHTML = '<i class="fas fa-expand me-1"></i> Toggle View';
+        document.body.style.overflow = '';
+      }
+    });
+  });
+  
+  // AI Resume Summary functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const aiSummaryBtn = document.getElementById('aiSummaryBtn');
+    const regenerateSummaryBtn = document.getElementById('regenerateSummaryBtn');
+    const summaryLoading = document.getElementById('summaryLoading');
+    const summaryContent = document.getElementById('summaryContent');
+    const summaryError = document.getElementById('summaryError');
+    const errorMessage = document.getElementById('errorMessage');
+    const candidateSummary = document.getElementById('candidateSummary');
+    const keySkills = document.getElementById('keySkills');
+    const jobFitAnalysis = document.getElementById('jobFitAnalysis');
+    
+    // Function to fetch resume summary from the server
+    function fetchResumeSummary() {
+      // Show loading, hide content and error
+      summaryLoading.classList.remove('d-none');
+      summaryContent.classList.add('d-none');
+      summaryError.classList.add('d-none');
+      regenerateSummaryBtn.classList.add('d-none');
+      
+      // Get application ID from the current page URL
+      const applicationId = window.location.pathname.split('/').pop();
+      
+      // Fetch the summary from the server
+      fetch(`/applications/resume-summary/${applicationId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Hide loading, show content
+          summaryLoading.classList.add('d-none');
+          summaryContent.classList.remove('d-none');
+          regenerateSummaryBtn.classList.remove('d-none');
+          
+          // Update the content sections
+          candidateSummary.innerHTML = data.candidate_summary;
+          keySkills.innerHTML = data.key_skills;
+          jobFitAnalysis.innerHTML = data.job_fit;
+        })
+        .catch(error => {
+          // Hide loading, show error
+          summaryLoading.classList.add('d-none');
+          summaryError.classList.remove('d-none');
+          regenerateSummaryBtn.classList.remove('d-none');
+          
+          // Update error message
+          errorMessage.textContent = `An error occurred: ${error.message}`;
+          console.error('Error fetching resume summary:', error);
+        });
+    }
+    
+    // Event listener for the AI Summary button
+    aiSummaryBtn.addEventListener('click', function() {
+      fetchResumeSummary();
+    });
+    
+    // Event listener for the Regenerate Summary button
+    regenerateSummaryBtn.addEventListener('click', function() {
+      fetchResumeSummary();
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Recruiter Profile - CareerBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <div>
+            <h3 class="mb-0">Recruiter Profile</h3>
+            <p class="mb-0 small">View your profile information</p>
+          </div>
+          <a href="{{ url_for('profile.recruiter_profile') }}" class="btn btn-light btn-sm">
+            <i class="fas fa-edit me-1"></i> Edit Profile
+          </a>
+        </div>
+        <div class="card-body">
+          <!-- Personal Information -->
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-user-tie me-2"></i>Personal Information
+            </h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-user me-2"></i>Full Name</div>
+                  <div class="field-value">{{ recruiter.full_name if recruiter.full_name else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-phone me-2"></i>Phone Number</div>
+                  <div class="field-value">{{ recruiter.phone if recruiter.phone else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-envelope me-2"></i>Email</div>
+                  <div class="field-value">{{ recruiter.email }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-id-badge me-2"></i>Designation</div>
+                  <div class="field-value">{{ recruiter.designation if recruiter.designation else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Company Information -->
+          <div class="profile-section mb-4">
+            <h4 class="section-title border-bottom pb-2 mb-3">
+              <i class="fas fa-building me-2"></i>Company Information
+            </h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-building me-2"></i>Company Name</div>
+                  <div class="field-value">{{ recruiter.company_name if recruiter.company_name else 'Not provided' }}</div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-industry me-2"></i>Industry</div>
+                  <div class="field-value">{{ recruiter.industry if recruiter.industry else 'Not provided' }}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fas fa-globe me-2"></i>Company Website</div>
+                  <div class="field-value">
+                    {% if recruiter.company_website %}
+                      <a href="{{ recruiter.company_website }}" target="_blank" class="text-primary">
+                        {{ recruiter.company_website }}
+                        <i class="fas fa-external-link-alt ms-1 small"></i>
+                      </a>
+                    {% else %}
+                      Not provided
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <div class="profile-field">
+                  <div class="field-label"><i class="fab fa-linkedin me-2"></i>LinkedIn</div>
+                  <div class="field-value">
+                    {% if recruiter.linkedin_url %}
+                      <a href="{{ recruiter.linkedin_url }}" target="_blank" class="text-primary">
+                        Company LinkedIn
+                        <i class="fas fa-external-link-alt ms-1 small"></i>
+                      </a>
+                    {% else %}
+                      Not provided
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('profile.recruiter_profile') }}" class="btn btn-primary">
+              <i class="fas fa-edit me-2"></i>Edit Profile
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .profile-field {
+    margin-bottom: 10px;
+  }
+  
+  .field-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+  
+  .field-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .section-title {
+    color: #495057;
+    font-size: 1.25rem;
+  }
+</style>
+{% endblock %}

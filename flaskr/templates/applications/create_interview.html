@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Create Interview{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Selected Candidate Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Job Information</h5>
+          <p><strong>Title:</strong> {{ job.title }}</p>
+          <p><strong>Company:</strong> {{ job.company_name }}</p>
+          <p><strong>Location:</strong> {{ job.location }}</p>
+        </div>
+        <div class="col-md-6">
+          <h5>Student Information</h5>
+          <p><strong>Name:</strong> {{ application.student_name }}</p>
+          <p><strong>Email:</strong> {{ application.student_email }}</p>
+          <p><strong>Phone:</strong> {{ application.student_phone }}</p>
+          <p><strong>CGPA:</strong> {{ application.student_cgpa }}</p>
+          <p><strong>Branch:</strong> {{ application.student_branch }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Create Interview</h5>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="interview_date" class="form-label">Interview Date</label>
+            <input type="date" class="form-control" id="interview_date" name="interview_date" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="interview_time" class="form-label">Interview Time</label>
+            <input type="time" class="form-control" id="interview_time" name="interview_time" required>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="interview_type" class="form-label">Interview Type</label>
+            <select class="form-select" id="interview_type" name="interview_type" required>
+              <option value="">Select Interview Type</option>
+              {% for type in interview_types %}
+                <option value="{{ type }}">{{ type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="interview_location" class="form-label">Interview Location</label>
+            <input type="text" class="form-control" id="interview_location" name="interview_location" required placeholder="Office address or online meeting link">
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="interview_details" class="form-label">Additional Details</label>
+          <textarea class="form-control" id="interview_details" name="interview_details" rows="3" placeholder="Any additional information for the candidate"></textarea>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+          <a href="{{ url_for('applications.view_application', application_id=application._id) }}" class="btn btn-secondary">Cancel</a>
+          <button type="submit" class="btn btn-success">Create Interview</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('interview_date').min = today;
+  });
+</script>
+{% endblock %}

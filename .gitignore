@@ -1,0 +1,26 @@
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+myenv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Instance folder (Flask)
+instance/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
